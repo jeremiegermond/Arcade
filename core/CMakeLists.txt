@@ -1,0 +1,5 @@
+project(arcade)
+cmake_minimum_required(VERSION 3.17)
+add_executable(arcade)
+include_directories(include)
+add_subdirectory(src)
