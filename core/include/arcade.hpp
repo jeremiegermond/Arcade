@@ -8,4 +8,6 @@
 #pragma once
 
 #include <iostream>
+#include <dlfcn.h>
 #include "library.hpp"
+#include "SDL2/SDL.h"

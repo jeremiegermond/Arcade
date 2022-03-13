@@ -8,12 +8,5 @@
 #include "arcade.hpp"
 
 int main() {
-    arcade::GameLibraryFactory factory;
-    auto lib = factory("nCurses");
-    auto lib2 = factory("SDL2");
-    auto lib3 = factory("libcaca");
 
-    std::cout << (lib ? lib->getName() : "null") << std::endl;
-    std::cout << (lib2 ? lib2->getName() : "null") << std::endl;
-    std::cout << (lib3 ? lib3->getName() : "null") << std::endl;
 }

@@ -10,18 +10,37 @@
 #include <memory>
 #include <unordered_map>
 #include <functional>
+#include <exception>
 
 namespace arcade {
 
-class GameLibrary {
+class Exception : public std::exception {
     private:
+        std::string message;
+    public:
+        Exception(const std::string &message) : message(message) {}
+        const char *what() const noexcept { return this->message.c_str(); }
+};
+
+class GameLibrary {
     public:
         virtual ~GameLibrary() = default;
         virtual std::string getName() const = 0;
 };
 
+struct DLDeleter {
+    void operator()(void *handle) {
+        if (handle) {
+            dlclose(handle);
+        }
+    }
+};
+
 class SDLLibrary : public GameLibrary {
+    private:
+        std::unique_ptr<void, DLDeleter> handle;
     public:
+        SDLLibrary() noexcept(false);
         std::string getName() const override;
 };
 
