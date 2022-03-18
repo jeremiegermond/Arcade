@@ -2,10 +2,8 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-LIL-4-1-arcade
 ** File description:
-** ncurses_game_library
+** vulkan_game_library
 */
-
-#pragma once
 
 #pragma once
 
@@ -13,7 +11,7 @@
 
 namespace arcade {
 
-class NCursesGameLibrary : public GameLibrary {
+class VulkanGameLibrary : public GameLibrary {
     private:
     public:
         std::string getName() const override;

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-LIL-4-1-arcade
 ** File description:
-** ncurse_game_library
+** ncurses_game_library
 */
 
 #include "ncurses_game_library.hpp"
