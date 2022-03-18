@@ -2,12 +2,8 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-LIL-4-1-arcade
 ** File description:
-** arcade
+** core
 */
 
 #pragma once
 
-#include <iostream>
-#include <dlfcn.h>
-#include "library.hpp"
-#include "SDL2/SDL.h"

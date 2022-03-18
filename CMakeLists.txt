@@ -1,0 +1,5 @@
+project(arcade)
+cmake_minimum_required(VERSION 3.17)
+include_directories(include)
+add_subdirectory(core)
+add_subdirectory(game_libraries)
