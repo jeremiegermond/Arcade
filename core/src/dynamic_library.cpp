@@ -20,11 +20,12 @@ DynamicLibrary::DynamicLibrary(const std::string &library, int flags) :
 
 GameLibrary * DynamicLibrary::create() {
     void *fptr = dlsym(this->handle.get(), "create");
-    arcade::GameLibrary * (* create) () = (arcade::GameLibrary * (*) ()) fptr;
 
     if (!fptr) {
         throw Exception("Cannot find create function " + std::string(dlerror()));
     }
+
+    arcade::GameLibrary * (* create) () = (arcade::GameLibrary * (*) ()) fptr;
     
     return create();
 }
