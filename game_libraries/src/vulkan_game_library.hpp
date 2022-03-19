@@ -12,11 +12,12 @@
 namespace arcade {
 
 class VulkanGameLibrary : public GameLibrary {
-    private:
     public:
+        VulkanGameLibrary(const Parameters &parameters);
+        void createWindow() {}
         std::string getName() const override;
 };
 
-extern "C" GameLibrary *create();
+extern "C" GameLibrary *create(const GameLibrary::Parameters &parameters);
 
 }

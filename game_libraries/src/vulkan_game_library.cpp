@@ -9,12 +9,14 @@
 
 namespace arcade {
 
+VulkanGameLibrary::VulkanGameLibrary(const Parameters &parameters) : GameLibrary(parameters) {}
+
 std::string VulkanGameLibrary::getName() const {
     return "Vulkan";
 }
 
-extern "C" GameLibrary *create() {
-    return new VulkanGameLibrary();
+extern "C" GameLibrary *create(const GameLibrary::Parameters &parameters) {
+    return new VulkanGameLibrary(parameters);
 }
 
 }

@@ -9,12 +9,38 @@
 
 namespace arcade {
 
+NCursesGameLibrary::NCursesGameLibrary(const Parameters &parameters) : GameLibrary(parameters) {}
+
+NCursesGameLibrary::~NCursesGameLibrary() {
+    if (this->window) {
+        endwin();
+    }
+}
+
+void NCursesGameLibrary::createWindow() {
+    if (initscr() < 0) {
+        throw Exception("Cannot init nCurses.");
+    }
+    this->window = newwin(
+        this->parameters.tilemap.height, 
+        this->parameters.tilemap.width,
+        0,
+        0
+    );
+
+    if (!this->window) {
+        throw Exception("Cannot create window.");
+    }
+    box(this->window, 0, 0);
+    wrefresh(this->window);
+}
+
 std::string NCursesGameLibrary::getName() const {
     return "nCurses";
 }
 
-extern "C" GameLibrary *create() {
-    return new NCursesGameLibrary();
+extern "C" GameLibrary *create(const GameLibrary::Parameters &parameters) {
+    return new NCursesGameLibrary(parameters);
 }
 
 }

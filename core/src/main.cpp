@@ -9,10 +9,32 @@
 #include "dynamic_library.hpp"
 #include "dlfcn.h"
 #include <iostream>
+#include <thread>
+#include <memory>
 
 int main() {
-    arcade::DynamicLibrary dynamic("./libVulkan.so", RTLD_LAZY | RTLD_LOCAL);
+    arcade::GameLibrary::Parameters parameters {
+        .window = {
+            .title = "Arcade",
+            .width = 1920 / 2,
+            .height = 1080 / 2
+        },
+        .tilemap = {
+            .width = 15,
+            .height = 15
+        }
+    };
 
-    arcade::GameLibrary *lib = dynamic.create();
+    {arcade::DynamicLibrary dynamic("./libSDL2.so", RTLD_LAZY | RTLD_LOCAL);
+    std::unique_ptr<arcade::GameLibrary> lib(dynamic.create(parameters));
     std::cout << lib->getName() << std::endl;
+    lib->createWindow();
+    std::this_thread::sleep_for(std::chrono::seconds(5));}
+
+
+    {arcade::DynamicLibrary dynamic2("./libnCurses.so", RTLD_LAZY | RTLD_LOCAL);
+    std::unique_ptr<arcade::GameLibrary> lib(dynamic2.create(parameters));
+    std::cout << lib->getName() << std::endl;
+    lib->createWindow();
+    std::this_thread::sleep_for(std::chrono::seconds(5));}
 }

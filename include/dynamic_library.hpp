@@ -19,7 +19,7 @@ class DynamicLibrary {
         std::unique_ptr<void, void (*) (void *)> handle;
     public:
         DynamicLibrary(const std::string &library, int flags);
-        GameLibrary *create();
+        GameLibrary *create(const GameLibrary::Parameters &parameters);
 };
 
 }
