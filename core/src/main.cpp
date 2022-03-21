@@ -25,16 +25,16 @@ int main() {
         }
     };
 
-    {arcade::DynamicLibrary dynamic("./libSDL2.so", RTLD_LAZY | RTLD_LOCAL);
+    {arcade::DynamicLibrary dynamic("./libarcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
     std::unique_ptr<arcade::GameLibrary> lib(dynamic.create(parameters));
     std::cout << lib->getName() << std::endl;
     lib->createWindow();
-    std::this_thread::sleep_for(std::chrono::seconds(5));}
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
 
-
-    {arcade::DynamicLibrary dynamic2("./libnCurses.so", RTLD_LAZY | RTLD_LOCAL);
+    {arcade::DynamicLibrary dynamic2("./libarcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
     std::unique_ptr<arcade::GameLibrary> lib(dynamic2.create(parameters));
     std::cout << lib->getName() << std::endl;
     lib->createWindow();
-    std::this_thread::sleep_for(std::chrono::seconds(5));}
+    std::this_thread::sleep_for(std::chrono::seconds(2));}
 }

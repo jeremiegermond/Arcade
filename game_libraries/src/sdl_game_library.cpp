@@ -6,6 +6,7 @@
 */
 
 #include "sdl_game_library.hpp"
+#include <iostream>
 
 namespace arcade {
 
@@ -35,7 +36,6 @@ void SDLGameLibrary::createWindow() {
     if (!this->window) {
         throw Exception("Cannot create window: " + std::string(SDL_GetError()));
     }
-
 }
 
 std::string SDLGameLibrary::getName() const {

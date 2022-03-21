@@ -1,4 +1,4 @@
 ./build.sh
-cd bin/
+cd lib/
 ./core
 cd ..

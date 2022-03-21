@@ -32,7 +32,7 @@ class GameLibrary {
         GameLibrary(const Parameters &parameters) : parameters(parameters) {}
     
     public:
-        ~GameLibrary() = default;
+        virtual ~GameLibrary() = default;
         virtual void createWindow() = 0;
         virtual std::string getName() const = 0;
 };

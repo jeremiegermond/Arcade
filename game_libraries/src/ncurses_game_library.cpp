@@ -4,7 +4,7 @@
 ** File description:
 ** ncurses_game_library
 */
-
+#include <iostream>
 #include "ncurses_game_library.hpp"
 
 namespace arcade {
@@ -13,12 +13,13 @@ NCursesGameLibrary::NCursesGameLibrary(const Parameters &parameters) : GameLibra
 
 NCursesGameLibrary::~NCursesGameLibrary() {
     if (this->window) {
+        clear();
         endwin();
     }
 }
 
 void NCursesGameLibrary::createWindow() {
-    if (initscr() < 0) {
+    if (!initscr()) {
         throw Exception("Cannot init nCurses.");
     }
     this->window = newwin(
