@@ -8,15 +8,21 @@
 #ifndef PACMAN_HPP_
 #define PACMAN_HPP_
 
+#include "../../../game_libraries/src/graphic_library.hpp"
+#include "../game_library.hpp"
+#include <memory>
+
 namespace arcade {
 
-class Pacman {
+class Pacman : public GameLibrary {
     public:
         Pacman();
-        ~Pacman();
+        ~Pacman() override;
 
     protected:
     private:
+        void setGameObjects() override;
+        void updateGameObjects() override;
 };
 
 }

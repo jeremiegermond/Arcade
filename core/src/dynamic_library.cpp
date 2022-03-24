@@ -18,16 +18,29 @@ DynamicLibrary::DynamicLibrary(const std::string &library, int flags) :
     }
 }
 
-GameLibrary * DynamicLibrary::create(const GameLibrary::Parameters &parameters) {
+IGraphicLibrary * DynamicLibrary::create(const IGraphicLibrary::Parameters &parameters) {
     void *fptr = dlsym(this->handle.get(), "create");
 
     if (!fptr) {
         throw Exception("Cannot find create function " + std::string(dlerror()));
     }
 
-    arcade::GameLibrary * (* create) (const GameLibrary::Parameters &) = (arcade::GameLibrary * (*) (const GameLibrary::Parameters &)) fptr;
+    arcade::IGraphicLibrary * (* create) (const IGraphicLibrary::Parameters &) = (arcade::IGraphicLibrary * (*) (const IGraphicLibrary::Parameters &)) fptr;
     
     return create(parameters);
+}
+
+IGameLibrary * DynamicLibrary::create_game()
+{
+    void *fptr = dlsym(this->handle.get(), "create_game");
+
+    if (!fptr) {
+        throw Exception("Cannot find create_game function " + std::string(dlerror()));
+    }
+
+    arcade::IGameLibrary * (* create_game) () = (arcade::IGameLibrary * (*) ()) fptr;
+    
+    return create_game();
 }
 
 }

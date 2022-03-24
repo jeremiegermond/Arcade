@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "game_library.hpp"
+#include "IGraphicLibrary.hpp"
+#include "IGameLibrary.hpp"
 #include <string>
 #include <memory>
 #include "dlfcn.h"
@@ -19,7 +20,8 @@ class DynamicLibrary {
         std::unique_ptr<void, void (*) (void *)> handle;
     public:
         DynamicLibrary(const std::string &library, int flags);
-        GameLibrary *create(const GameLibrary::Parameters &parameters);
+        IGraphicLibrary *create(const IGraphicLibrary::Parameters &parameters);
+        IGameLibrary *create_game();
 };
 
 }

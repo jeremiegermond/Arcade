@@ -1,17 +1,18 @@
-/*
-** EPITECH PROJECT, 2022
-** B-OOP-400-LIL-4-1-arcade
-** File description:
-** game_library
-*/
+//
+// Created by leo on 2022-03-24.
+//
 
-#pragma once
+#ifndef ARCADE_IGRAPHICLIBRARY_HPP
+#define ARCADE_IGRAPHICLIBRARY_HPP
 
 #include <string>
+#include "object.hpp"
+#include <vector>
+#include <memory>
 
 namespace arcade {
 
-class GameLibrary {
+    class IGraphicLibrary {
     public:
         struct Parameters {
             struct Window {
@@ -27,14 +28,15 @@ class GameLibrary {
             Window window;
             TileMap tilemap;
         };
-    protected:
-        Parameters parameters;
-        GameLibrary(const Parameters &parameters) : parameters(parameters) {}
-    
-    public:
-        virtual ~GameLibrary() = default;
+
+        virtual ~IGraphicLibrary() = default;
         virtual void createWindow() = 0;
         virtual std::string getName() const = 0;
-};
+        virtual void closeWindow() = 0;
+        virtual void loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) = 0;
+        virtual void loop() = 0;
+    };
 
 }
+
+#endif //ARCADE_IGRAPHICLIBRARY_HPP

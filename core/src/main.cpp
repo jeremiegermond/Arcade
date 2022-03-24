@@ -5,36 +5,46 @@
 ** main
 */
 
-#include "game_library.hpp"
+#include "../../game_libraries/src/graphic_library.hpp"
 #include "dynamic_library.hpp"
 #include "dlfcn.h"
 #include <iostream>
 #include <thread>
 #include <memory>
+#include <filesystem>
 
 int main() {
-    arcade::GameLibrary::Parameters parameters {
+    arcade::GraphicLibrary::Parameters parameters {
         .window = {
             .title = "Arcade",
-            .width = 1920 / 2,
-            .height = 1080 / 2
+            .width = 1920,
+            .height = 1080
         },
         .tilemap = {
-            .width = 15,
-            .height = 15
+            .width = 76,
+            .height = 22
         }
     };
+    {
+        arcade::DynamicLibrary dynamic("lib//libarcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
+        std::unique_ptr<arcade::IGraphicLibrary> lib(dynamic.create(parameters));
+        std::cout << lib->getName() << std::endl;
 
-    {arcade::DynamicLibrary dynamic("./libarcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
-    std::unique_ptr<arcade::GameLibrary> lib(dynamic.create(parameters));
-    std::cout << lib->getName() << std::endl;
-    lib->createWindow();
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+        arcade::DynamicLibrary dynamic2("lib/libarcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
+        std::unique_ptr<arcade::IGraphicLibrary> lib2(dynamic2.create(parameters));
+        std::cout << lib2->getName() << std::endl;
+
+        arcade::DynamicLibrary game_lib("lib/libarcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
+        std::unique_ptr<arcade::IGameLibrary> game(game_lib.create_game());
+
+        game->setGameObjects();
+        lib->createWindow();
+        lib->loadObjects(game->getGameObjects());
+        lib->loop();
+        lib->closeWindow();
+        lib2->createWindow();
+        lib2->loadObjects(game->getGameObjects());
+        lib2->loop();
+        lib2->closeWindow();
     }
-
-    {arcade::DynamicLibrary dynamic2("./libarcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
-    std::unique_ptr<arcade::GameLibrary> lib(dynamic2.create(parameters));
-    std::cout << lib->getName() << std::endl;
-    lib->createWindow();
-    std::this_thread::sleep_for(std::chrono::seconds(2));}
 }
