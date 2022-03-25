@@ -14,7 +14,8 @@
 namespace arcade {
 
     enum objectType {
-        TEXT
+        TEXT,
+        ENTITY
     };
 
 enum objectState {

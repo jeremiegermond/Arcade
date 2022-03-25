@@ -23,6 +23,12 @@ class Pacman : public GameLibrary {
     private:
         void setGameObjects() override;
         void updateGameObjects() override;
+        std::shared_ptr<arcade::object> pacman;
+        std::shared_ptr<arcade::object> phantoms1;
+        std::shared_ptr<arcade::object> phantoms2;
+        std::shared_ptr<arcade::object> phantoms3;
+        std::shared_ptr<arcade::object> phantoms4;
+
 };
 
 }

@@ -7,13 +7,12 @@
 
 #include "sdl_game_library.hpp"
 #include <iostream>
-#include <filesystem>
 
 namespace arcade {
 
 SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr) {
     TTF_Init();
-    Sans = TTF_OpenFont("./assets/Sans.ttf", 24);
+    Sans = TTF_OpenFont("../assets/Sans.ttf", 24);
     if (Sans == nullptr) {
         throw arcade::Exception("Can't open font file");
     }
@@ -90,7 +89,7 @@ std::string SDLGraphicLibrary::getName() const {
             throw arcade::Exception("surface is null");
         }
         castedObject.sdlMessageRect.h = 100;
-        castedObject.sdlMessageRect.w = 150;
+        castedObject.sdlMessageRect.w = 200;
         castedObject.sdlMessageRect.x = castedObject.posX * 25;
         castedObject.sdlMessageRect.y = castedObject.posY * 25;
         SDL_RenderCopy(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlMessageRect);
@@ -98,13 +97,9 @@ std::string SDLGraphicLibrary::getName() const {
         textObjects.push_back(std::make_shared<sdlTextObject>(castedObject));
     }
 
-    void SDLGraphicLibrary::renderTextObjects() {
-
-    }
-
     extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
-    return new SDLGraphicLibrary(parameters);
-}
+        return new SDLGraphicLibrary(parameters);
+    }
 
 
 }

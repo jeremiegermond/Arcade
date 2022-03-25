@@ -15,7 +15,6 @@ namespace arcade {
 NCursesGraphicLibrary::NCursesGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters) {}
 
 NCursesGraphicLibrary::~NCursesGraphicLibrary() {
-    closeWindow();
 }
 
 void NCursesGraphicLibrary::closeWindow()

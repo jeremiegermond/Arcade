@@ -41,7 +41,7 @@ class SDLGraphicLibrary : public GraphicLibrary {
         void loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) override;
         void loop() override;
         void initTextObjects(std::shared_ptr<object>& GameObject);
-        void renderTextObjects();
+
 };
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters);

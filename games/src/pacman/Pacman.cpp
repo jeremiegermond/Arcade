@@ -12,7 +12,7 @@
 
 namespace arcade {
 
-Pacman::Pacman() : GameLibrary()
+Pacman::Pacman() : GameLibrary(), pacman(new object), phantoms1(new object), phantoms2(new object), phantoms3(new object), phantoms4(new object)
 {
     std::cout << "PACMAN" << std::endl;
 }
@@ -22,7 +22,12 @@ Pacman::~Pacman()
 
 void Pacman::setGameObjects()
 {
-    GameLibrary::setGameObjects();
+    game_text.text = "Pacman";
+    game_text.posX = 34;
+    pacman->texturePath = "./assets/pacman.png";
+    
+
+    _game_objects.push_back(std::make_shared<arcade::object>(game_text));
 }
 
 void Pacman::updateGameObjects()

@@ -16,10 +16,7 @@ GameLibrary::~GameLibrary()
 = default;
 
     void GameLibrary::setGameObjects() {
-        game_text.text = "Pacman";
-        game_text.posX = 34;
 
-        _game_objects.push_back(std::make_shared<arcade::object>(game_text));
     }
 
     void GameLibrary::updateGameObjects() {
