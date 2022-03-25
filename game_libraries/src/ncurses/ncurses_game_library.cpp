@@ -14,12 +14,8 @@ namespace arcade {
 
 NCursesGraphicLibrary::NCursesGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters) {}
 
-NCursesGraphicLibrary::~NCursesGraphicLibrary() {
-}
-
-void NCursesGraphicLibrary::closeWindow()
-{
-    if (this->_window) {
+void NCursesGraphicLibrary::closeWindow() {
+    if (this->window) {
         clear();
         endwin();
     }
@@ -29,50 +25,53 @@ void NCursesGraphicLibrary::createWindow() {
     if (!initscr()) {
         throw Exception("Cannot init nCurses.");
     }
-    this->_window = newwin(
+    this->window = newwin(
         this->parameters.tilemap.height, 
         this->parameters.tilemap.width,
         0,
         0
     );
 
-    if (!this->_window) {
+    if (!this->window) {
         throw Exception("Cannot create _window.");
     }
-    box(this->_window, 0, 0);
-    wrefresh(this->_window);
+    box(this->window, 0, 0);
+    wrefresh(this->window);
 }
 
 std::string NCursesGraphicLibrary::getName() const {
     return "nCurses";
 }
 
-    void NCursesGraphicLibrary::loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) {
-        for (auto &object : GameObjects) {
-            switch (object->type) {
-                case TEXT:
-                    initTextObjects(object);
-            }
+void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
+    for (auto &object : GameObjects) {
+        switch (object.type) {
+            case Type::TEXT:
+                initTextObjects(object);
+                break;
+            default:
+                break;
         }
     }
+}
 
-    void NCursesGraphicLibrary::loop() {
-        renderTextObjects();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+void NCursesGraphicLibrary::loop() {
+    renderTextObjects();
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void NCursesGraphicLibrary::initTextObjects(object &gameObject) {
+    textObjects.push_back(gameObject);
+}
+
+void NCursesGraphicLibrary::renderTextObjects() {
+    for (auto &object: textObjects) {
+        mvwaddstr(window, object.posY, object.posX, &object.text[0]);
+        wrefresh(window);
     }
+}
 
-    void NCursesGraphicLibrary::initTextObjects(std::shared_ptr<object> &GameObject) {
-        _text_objects.push_back(GameObject);
-    }
-
-    void NCursesGraphicLibrary::renderTextObjects() {
-        for (auto &object: _text_objects) {
-            mvwaddstr(_window, object->posY, object->posX, &object->text[0]);
-            wrefresh(_window);
-        }
-    }
-
-    extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
+extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
     return new NCursesGraphicLibrary(parameters);
 }
 

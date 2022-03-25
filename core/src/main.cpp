@@ -5,7 +5,7 @@
 ** main
 */
 
-#include "../../game_libraries/src/graphic_library.hpp"
+#include "graphic_library.hpp"
 #include "dynamic_library.hpp"
 #include "dlfcn.h"
 #include <iostream>
@@ -24,16 +24,17 @@ int main() {
             .height = 22
         }
     };
+    
     {
-        arcade::DynamicLibrary dynamic("../lib/libarcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
+        arcade::DynamicLibrary dynamic("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
         std::unique_ptr<arcade::IGraphicLibrary> lib(dynamic.create(parameters));
         std::cout << lib->getName() << std::endl;
 
-        arcade::DynamicLibrary dynamic2("../lib/libarcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
+        arcade::DynamicLibrary dynamic2("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
         std::unique_ptr<arcade::IGraphicLibrary> lib2(dynamic2.create(parameters));
         std::cout << lib2->getName() << std::endl;
 
-        arcade::DynamicLibrary game_lib("../lib/libarcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
+        arcade::DynamicLibrary game_lib("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
         std::unique_ptr<arcade::IGameLibrary> game(game_lib.create_game());
 
         game->setGameObjects();

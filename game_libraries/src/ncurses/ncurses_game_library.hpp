@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../graphic_library.hpp"
+#include "graphic_library.hpp"
 #include <ncurses.h>
 #include "exception.hpp"
 #include <vector>
@@ -19,19 +19,19 @@ namespace arcade {
 
 class NCursesGraphicLibrary : public GraphicLibrary {
     private:
-        WINDOW *_window;
-        std::vector<std::shared_ptr<arcade::object>> _text_objects;
+        WINDOW *window;
+        std::vector<object> textObjects;
 
-        void initTextObjects(std::shared_ptr<object>& GameObject);
+        void initTextObjects(object &gameObject);
         void renderTextObjects();
     public:
         NCursesGraphicLibrary(const Parameters &parameters);
-        ~NCursesGraphicLibrary();
+        ~NCursesGraphicLibrary() = default;
         
         void createWindow() override;
         std::string getName() const override;
         void closeWindow() override;
-        void loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) override;
+        void loadObjects(std::vector<object> gameObjects) override;
         void loop() override;
 };
 

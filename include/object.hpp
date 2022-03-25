@@ -13,18 +13,17 @@
 
 namespace arcade {
 
-    enum objectType {
-        TEXT,
-        ENTITY
-    };
+enum class Type {
+    TEXT,
+    ENTITY
+};
 
-enum objectState {
+enum class State {
     NONE
 };
 
-struct object
-{
-    objectType type;
+struct object {
+    Type type;
     std::string texturePath;
     std::string text;
     char chr;

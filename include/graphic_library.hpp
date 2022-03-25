@@ -16,13 +16,11 @@
 namespace arcade {
 
 class GraphicLibrary : public IGraphicLibrary {
-    public:
     protected:
         Parameters parameters;
-
     public:
-        GraphicLibrary(const Parameters &parameters);
-        ~GraphicLibrary();
+        GraphicLibrary(const Parameters &parameters) : parameters(parameters) {}
+        ~GraphicLibrary() = default;
 };
 
 }

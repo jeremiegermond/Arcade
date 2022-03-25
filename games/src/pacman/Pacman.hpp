@@ -8,26 +8,25 @@
 #ifndef PACMAN_HPP_
 #define PACMAN_HPP_
 
-#include "../../../game_libraries/src/graphic_library.hpp"
-#include "../game_library.hpp"
+#include "graphic_library.hpp"
+#include "game_library.hpp"
 #include <memory>
+#include <iostream>
 
 namespace arcade {
 
 class Pacman : public GameLibrary {
     public:
         Pacman();
-        ~Pacman() override;
-
-    protected:
+        ~Pacman() = default;
     private:
         void setGameObjects() override;
         void updateGameObjects() override;
-        std::shared_ptr<arcade::object> pacman;
-        std::shared_ptr<arcade::object> phantoms1;
-        std::shared_ptr<arcade::object> phantoms2;
-        std::shared_ptr<arcade::object> phantoms3;
-        std::shared_ptr<arcade::object> phantoms4;
+        std::unique_ptr<object> pacman;
+        std::unique_ptr<object> phantoms1;
+        std::unique_ptr<object> phantoms2;
+        std::unique_ptr<object> phantoms3;
+        std::unique_ptr<object> phantoms4;
 
 };
 
