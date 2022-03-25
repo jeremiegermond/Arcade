@@ -12,22 +12,19 @@
 #include "game_library.hpp"
 #include <memory>
 #include <iostream>
+#include <array>
 
 namespace arcade {
 
 class Pacman : public GameLibrary {
-    public:
-        Pacman();
-        ~Pacman() = default;
     private:
         void setGameObjects() override;
         void updateGameObjects() override;
-        std::unique_ptr<object> pacman;
-        std::unique_ptr<object> phantoms1;
-        std::unique_ptr<object> phantoms2;
-        std::unique_ptr<object> phantoms3;
-        std::unique_ptr<object> phantoms4;
-
+        object pacman;
+        std::array<object, 4> phantoms;
+    public:
+        Pacman();
+        ~Pacman() = default;
 };
 
 }

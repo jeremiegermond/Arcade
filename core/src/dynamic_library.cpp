@@ -25,7 +25,7 @@ IGraphicLibrary * DynamicLibrary::create(const IGraphicLibrary::Parameters &para
         throw Exception("Cannot find create function " + std::string(dlerror()));
     }
 
-    arcade::IGraphicLibrary * (* create) (const IGraphicLibrary::Parameters &) = (arcade::IGraphicLibrary * (*) (const IGraphicLibrary::Parameters &)) fptr;
+    IGraphicLibrary * (* create) (const IGraphicLibrary::Parameters &) = (IGraphicLibrary * (*) (const IGraphicLibrary::Parameters &)) fptr;
     
     return create(parameters);
 }
@@ -38,7 +38,7 @@ IGameLibrary * DynamicLibrary::create_game()
         throw Exception("Cannot find create_game function " + std::string(dlerror()));
     }
 
-    arcade::IGameLibrary * (* create_game) () = (arcade::IGameLibrary * (*) ()) fptr;
+    IGameLibrary * (* create_game) () = (IGameLibrary * (*) ()) fptr;
     
     return create_game();
 }
