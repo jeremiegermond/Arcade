@@ -135,7 +135,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
         castedObject.sdlDstRect.w = 500;
         castedObject.sdlDstRect.x = castedObject.posX;
         castedObject.sdlDstRect.y = castedObject.posY;
-        castedObject.sdlSrcRect = {0, 0, 20, 20};
+        castedObject.sdlSrcRect = {castedObject.animW, castedObject.animH, castedObject.spriteW, castedObject.spriteH};
 
         entityObjects.push_back(castedObject);
     }
@@ -146,7 +146,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
                 continue;
             if (i.currentFrame >= i.maxFrame)
                 i.currentFrame = 0;
-            i.sdlSrcRect = {i.animW * i.currentFrame, i.animH * i.currentFrame, i.Weight, i.Weight};
+            i.sdlSrcRect = {i.animW * i.currentFrame, i.animH * i.currentFrame, i.spriteW, i.spriteW};
             i.currentFrame += 1;
         }
     }

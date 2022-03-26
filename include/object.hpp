@@ -34,8 +34,8 @@ struct object
     int posY;
     int animW;
     int animH;
-    int Weight;
-    int Height;
+    int spriteW;
+    int spriteH;
     double rotation;
     bool isAnimated;
     int currentFrame;

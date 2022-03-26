@@ -31,10 +31,11 @@ void Pacman::setGameObjects()
     pacman.animW = 20;
     pacman.animH = 0;
     pacman.isAnimated = true;
-    pacman.Weight = 20;
-    pacman.Height = 20;
+    pacman.spriteW = 20;
+    pacman.spriteH = 20;
 //    pacman->rotation = 180;
 //    phantoms1->rotation = 180;
+    std::cout << "TEST" << std::endl;
 
     gameObjects.push_back(gameText);
     gameObjects.push_back(pacman);
