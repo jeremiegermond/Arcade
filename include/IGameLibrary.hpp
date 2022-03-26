@@ -9,16 +9,15 @@
 #define ARCADE_IGAMELIBRARY_HPP
 
 namespace arcade {
+    
+class IGameLibrary {
+    public:
+        virtual ~IGameLibrary() = default;
+        virtual void setGameObjects() {}
+        virtual std::vector<object> getGameObjects() { return std::vector<object>(); }
+};
 
-    class IGameLibrary {
-        public:
-            virtual ~IGameLibrary() = default;
-            virtual void setGameObjects() = 0;
-            virtual std::vector<std::shared_ptr<arcade::object>> getGameObjects() = 0;
-
-    };
-
-    extern "C" IGameLibrary *create_game();
+extern "C" IGameLibrary *create_game();
 
 }
 

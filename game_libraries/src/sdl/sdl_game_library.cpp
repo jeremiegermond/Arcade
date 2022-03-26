@@ -11,8 +11,11 @@
 namespace arcade {
 
 SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        throw Exception("Cannot initialize SDL: " + std::string(SDL_GetError()));
+    }
     TTF_Init();
-    Sans = TTF_OpenFont("../assets/Sans.ttf", 24);
+    Sans = TTF_OpenFont("assets/Sans.ttf", 24);
     if (Sans == nullptr) {
         throw arcade::Exception("Can't open font file");
     }
@@ -52,7 +55,7 @@ void SDLGraphicLibrary::createWindow() {
     renderer = SDL_CreateRenderer(
         window,
         -1,
-        0
+        SDL_RENDERER_ACCELERATED
     );
     started = true;
 }
@@ -61,28 +64,28 @@ std::string SDLGraphicLibrary::getName() const {
     return "SDL2";
 }
 
-    void SDLGraphicLibrary::loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) {
-        for (auto &object : GameObjects) {
-            switch (object->type) {
-                case arcade::TEXT:
-                    initTextObjects(object);
-                    break;
-                case arcade::ENTITY:
-                    initEntityObjects(object);
-                    break;
-            }
+void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
+    for (auto &object : gameObjects) {
+        switch (object.type) {
+            case Type::TEXT:
+                initTextObjects(object);
+                break;
+            case Type::ENTITY:
+                initEntityObjects(object);
+                break;
         }
     }
+}
 
     void SDLGraphicLibrary::loop() {
         while (started) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             for (auto &i: textObjects) {
-                SDL_RenderCopy(renderer, i->sdlTexture, nullptr, &i->sdlDstRect);
+                SDL_RenderCopy(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
             }
             for (auto &i: entityObjects) {
-                SDL_RenderCopyEx(renderer, i->sdlTexture, &i->sdlSrcRect, &i->sdlDstRect, i->rotation, NULL, SDL_FLIP_NONE);
+                SDL_RenderCopyEx(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, i.rotation, NULL, SDL_FLIP_NONE);
             }
             SDL_RenderPresent(renderer);
             if (SDL_GetTicks() > lastTime + 150) {
@@ -93,8 +96,8 @@ std::string SDLGraphicLibrary::getName() const {
         }
     }
 
-    void SDLGraphicLibrary::initTextObjects(std::shared_ptr<object>& object) {
-        sdlObject castedObject = *std::static_pointer_cast<sdlObject>(object);
+    void SDLGraphicLibrary::initTextObjects(object &gameObject) {
+        sdlObject castedObject(gameObject);
 
         castedObject.sdlSurface = TTF_RenderText_Solid(Sans, castedObject.text.c_str(), textColor);
         if (castedObject.sdlSurface == nullptr) {
@@ -112,11 +115,11 @@ std::string SDLGraphicLibrary::getName() const {
         castedObject.sdlDstRect.y = castedObject.posY * 25;
         SDL_RenderCopy(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
 
-        textObjects.push_back(std::make_shared<sdlObject>(castedObject));
+        textObjects.push_back(castedObject);
     }
 
-    void SDLGraphicLibrary::initEntityObjects(std::shared_ptr<object> &object) {
-        sdlObject castedObject = *std::static_pointer_cast<sdlObject>(object);
+    void SDLGraphicLibrary::initEntityObjects(object &gameObject) {
+        sdlObject castedObject(gameObject);
 
         castedObject.sdlSurface = IMG_Load(castedObject.texturePath.c_str());
         if (castedObject.sdlSurface == nullptr) {
@@ -134,17 +137,17 @@ std::string SDLGraphicLibrary::getName() const {
         castedObject.sdlDstRect.y = castedObject.posY;
         castedObject.sdlSrcRect = {0, 0, 20, 20};
 
-        entityObjects.push_back(std::make_shared<sdlObject>(castedObject));
+        entityObjects.push_back(castedObject);
     }
 
     void SDLGraphicLibrary::animateEntityObject() {
         for (auto &i: entityObjects) {
-            if (!i->isAnimated)
+            if (!i.isAnimated)
                 continue;
-            if (i->currentFrame >= i->maxFrame)
-                i->currentFrame = 0;
-            i->sdlSrcRect = {i->animW * i->currentFrame, i->animH * i->currentFrame, i->Weight, i->Weight};
-            i->currentFrame += 1;
+            if (i.currentFrame >= i.maxFrame)
+                i.currentFrame = 0;
+            i.sdlSrcRect = {i.animW * i.currentFrame, i.animH * i.currentFrame, i.Weight, i.Weight};
+            i.currentFrame += 1;
         }
     }
 

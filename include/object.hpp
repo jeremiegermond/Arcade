@@ -10,16 +10,15 @@
 
 #include <iostream>
 #include <string>
-#include <memory>
 
 namespace arcade {
 
-enum objectType {
+enum class Type {
     TEXT,
     ENTITY
 };
 
-enum objectState {
+enum class State {
     NONE,
     ALIVE,
     DEAD
@@ -27,8 +26,7 @@ enum objectState {
 
 struct object
 {
-    objectType type;
-    objectState state;
+    Type type;
     std::string texturePath;
     std::string text;
     char chr;

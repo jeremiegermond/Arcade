@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../graphic_library.hpp"
+#include "graphic_library.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
@@ -22,21 +22,24 @@ struct sdlObject : public arcade::object {
     SDL_Rect sdlSrcRect{};
     SDL_Texture *sdlTexture{};
     SDL_Surface *sdlSurface{};
+
+    sdlObject(const object &obj) : object(obj) {}
 };
+
 
 class SDLGraphicLibrary : public GraphicLibrary {
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;
-        std::vector<std::shared_ptr<sdlObject>> textObjects;
-        std::vector<std::shared_ptr<sdlObject>> entityObjects;
+        std::vector<sdlObject> textObjects;
+        std::vector<sdlObject> entityObjects;
         TTF_Font *Sans;
         SDL_Color textColor;
         bool started;
         unsigned int lastTime;
 
-        void initTextObjects(std::shared_ptr<object>& GameObject);
-        void initEntityObjects(std::shared_ptr<object>& GameObject);
+        void initTextObjects(object &gameObject);
+        void initEntityObjects(object &gameObject);
         void animateEntityObject();
     public:
         SDLGraphicLibrary(const Parameters &parameters);
@@ -45,8 +48,9 @@ class SDLGraphicLibrary : public GraphicLibrary {
         void createWindow() override;
         std::string getName() const override;
         void closeWindow() override;
-        void loadObjects(std::vector<std::shared_ptr<arcade::object>> GameObjects) override;
+        void loadObjects(std::vector<object> gameObjects) override;
         void loop() override;
+
 };
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters);
