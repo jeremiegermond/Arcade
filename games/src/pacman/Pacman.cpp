@@ -35,7 +35,6 @@ void Pacman::setGameObjects()
     pacman.spriteH = 20;
 //    pacman->rotation = 180;
 //    phantoms1->rotation = 180;
-    std::cout << "TEST" << std::endl;
 
     gameObjects.push_back(gameText);
     gameObjects.push_back(pacman);
