@@ -25,7 +25,7 @@ void Pacman::setGameObjects()
     gameText.text = "Pacman";
     gameText.posX = 34;
     gameText.type = Type::TEXT;
-    pacman.texturePath = "../assets/pacman.png";
+    pacman.texturePath = "./assets/pacman.png";
     pacman.maxFrame = 3;
     pacman.type = Type::ENTITY;
     pacman.animW = 20;
