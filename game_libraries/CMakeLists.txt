@@ -6,8 +6,8 @@ file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
 add_library(arcade_sdl2 SHARED src/sdl/sdl_game_library.cpp ../include/IGraphicLibrary.hpp src/graphic_library.cpp)
 find_package(SDL2 REQUIRED)
-target_include_directories(arcade_sdl2 PUBLIC ${SDL2_INCLUDE_DIRS} SDL2_ttf)
-target_link_libraries(arcade_sdl2 ${SDL2_LIBRARIES} SDL2_ttf)
+target_include_directories(arcade_sdl2 PUBLIC ${SDL2_INCLUDE_DIRS} SDL2_ttf SDL2_image)
+target_link_libraries(arcade_sdl2 ${SDL2_LIBRARIES} SDL2_ttf SDL2_image)
 target_link_libraries(arcade_sdl2 ${SDL2})
 add_custom_command(TARGET arcade_sdl2
         POST_BUILD

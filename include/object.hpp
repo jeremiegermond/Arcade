@@ -10,28 +10,38 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 namespace arcade {
 
-    enum objectType {
-        TEXT,
-        ENTITY
-    };
+enum objectType {
+    TEXT,
+    ENTITY
+};
 
 enum objectState {
-    NONE
+    NONE,
+    ALIVE,
+    DEAD
 };
 
 struct object
 {
     objectType type;
+    objectState state;
     std::string texturePath;
     std::string text;
     char chr;
     int posX;
     int posY;
+    int animW;
+    int animH;
+    int Weight;
+    int Height;
+    double rotation;
     bool isAnimated;
     int currentFrame;
+    int maxFrame;
 };
 
 }

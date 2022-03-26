@@ -24,10 +24,28 @@ void Pacman::setGameObjects()
 {
     game_text.text = "Pacman";
     game_text.posX = 34;
-    pacman->texturePath = "./assets/pacman.png";
-    
+    game_text.type = TEXT;
+    pacman->texturePath = "../assets/pacman.png";
+    pacman->maxFrame = 3;
+    pacman->type = ENTITY;
+    pacman->animW = 20;
+    pacman->animH = 0;
+    pacman->isAnimated = true;
+    pacman->Weight = 20;
+    pacman->Height = 20;
+//    pacman->rotation = 180;
+    phantoms1->texturePath = "../assets/pacman.png";
+    phantoms1->maxFrame = 1;
+    phantoms1->type = ENTITY;
+    phantoms1->animW = 20;
+    phantoms1->animH = 0;
+    phantoms1->isAnimated = true;
+    phantoms1->Weight = 20;
+    phantoms1->Height = 20;
+//    phantoms1->rotation = 180;
 
     _game_objects.push_back(std::make_shared<arcade::object>(game_text));
+    _game_objects.push_back(pacman);
 }
 
 void Pacman::updateGameObjects()
