@@ -19,13 +19,15 @@ class GameLibrary : public IGameLibrary {
     protected:
         std::vector<object> gameObjects;
         object gameText;
+        KeyEvent event;
+        virtual void updateGameObjects() {}
     public:
         GameLibrary() = default;
         ~GameLibrary() override = default;
         std::vector<object> getGameObjects() override { return this->gameObjects; }
         void setGameObjects() override {}
-    protected:
-        virtual void updateGameObjects() {}
+        void setKeyEvent(KeyEvent e) override { event = e; }
+
 };
 
 }

@@ -37,10 +37,13 @@ class SDLGraphicLibrary : public GraphicLibrary {
         SDL_Color textColor;
         bool started;
         unsigned int lastTime;
+        int gameSizeUnit;
 
         void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);
         void animateEntityObject();
+        void initMapObject(object &gameObject);
+        KeyEvent handleInputs();
     public:
         SDLGraphicLibrary(const Parameters &parameters);
         ~SDLGraphicLibrary() override;
@@ -49,8 +52,7 @@ class SDLGraphicLibrary : public GraphicLibrary {
         std::string getName() const override;
         void closeWindow() override;
         void loadObjects(std::vector<object> gameObjects) override;
-        void loop() override;
-
+        KeyEvent loop() override;
 };
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters);

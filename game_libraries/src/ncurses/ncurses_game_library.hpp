@@ -24,6 +24,7 @@ class NCursesGraphicLibrary : public GraphicLibrary {
 
         void initTextObjects(object &gameObject);
         void renderTextObjects();
+        KeyEvent handleInputs();
     public:
         NCursesGraphicLibrary(const Parameters &parameters);
         ~NCursesGraphicLibrary() = default;
@@ -32,7 +33,7 @@ class NCursesGraphicLibrary : public GraphicLibrary {
         std::string getName() const override;
         void closeWindow() override;
         void loadObjects(std::vector<object> gameObjects) override;
-        void loop() override;
+        KeyEvent loop() override;
 };
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters);

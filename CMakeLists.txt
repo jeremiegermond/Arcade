@@ -4,7 +4,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 include_directories(include)
 
-add_executable(arcade)
+add_executable(arcade core/src/Arcade.cpp core/src/Arcade.hpp)
 add_subdirectory(core)
 
 add_library(arcade_sdl2 SHARED)

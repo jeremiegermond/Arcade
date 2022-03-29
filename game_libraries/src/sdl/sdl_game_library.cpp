@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr) {
+SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(40) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw Exception("Cannot initialize SDL: " + std::string(SDL_GetError()));
     }
@@ -77,23 +77,22 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
     }
 }
 
-    void SDLGraphicLibrary::loop() {
-        while (started) {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
-            for (auto &i: textObjects) {
-                SDL_RenderCopy(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
-            }
-            for (auto &i: entityObjects) {
-                SDL_RenderCopyEx(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, i.rotation, NULL, SDL_FLIP_NONE);
-            }
-            SDL_RenderPresent(renderer);
-            if (SDL_GetTicks() > lastTime + 150) {
-                animateEntityObject();
-                lastTime = SDL_GetTicks();
-            }
-            //            SDL_Delay(15);
+    KeyEvent SDLGraphicLibrary::loop() {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        for (auto &i: entityObjects) {
+            i.sdlDstRect = {*i.posX * gameSizeUnit, *i.posY * gameSizeUnit, i.sizeW * gameSizeUnit, i.sizeH * gameSizeUnit};
+            SDL_RenderCopyEx(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
         }
+        for (auto &i: textObjects) {
+            SDL_RenderCopy(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
+        }
+        SDL_RenderPresent(renderer);
+        if (SDL_GetTicks() > lastTime + 150) {
+            animateEntityObject();
+            lastTime = SDL_GetTicks();
+        }
+        return handleInputs();
     }
 
     void SDLGraphicLibrary::initTextObjects(object &gameObject) {
@@ -109,10 +108,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
             std::cout << SDL_GetError() << std::endl;
             throw arcade::Exception("surface is null");
         }
-        castedObject.sdlDstRect.h = 100;
-        castedObject.sdlDstRect.w = 200;
-        castedObject.sdlDstRect.x = castedObject.posX * 25;
-        castedObject.sdlDstRect.y = castedObject.posY * 25;
+        castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, 200, 100};
         SDL_RenderCopy(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
 
         textObjects.push_back(castedObject);
@@ -131,11 +127,11 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
             std::cout << SDL_GetError() << std::endl;
             throw arcade::Exception("surface is null");
         }
-        castedObject.sdlDstRect.h = 500;
-        castedObject.sdlDstRect.w = 500;
-        castedObject.sdlDstRect.x = castedObject.posX;
-        castedObject.sdlDstRect.y = castedObject.posY;
-        castedObject.sdlSrcRect = {castedObject.animW, castedObject.animH, castedObject.spriteW, castedObject.spriteH};
+        castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, castedObject.sizeW * gameSizeUnit, castedObject.sizeH * gameSizeUnit};
+        if (castedObject.isAnimated)
+            castedObject.sdlSrcRect = {castedObject.animX + castedObject.animW * castedObject.currentFrame, castedObject.animY + castedObject.animH * castedObject.currentFrame, castedObject.spriteW, castedObject.spriteH};
+        else
+            castedObject.sdlSrcRect = {castedObject.animX + castedObject.animW, castedObject.animY + castedObject.animH, castedObject.spriteW, castedObject.spriteH};
 
         entityObjects.push_back(castedObject);
     }
@@ -146,9 +142,53 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
                 continue;
             if (i.currentFrame >= i.maxFrame)
                 i.currentFrame = 0;
-            i.sdlSrcRect = {i.animW * i.currentFrame, i.animH * i.currentFrame, i.spriteW, i.spriteW};
+            i.sdlSrcRect = {i.animX + i.animW * i.currentFrame, i.animY + i.animH * i.currentFrame, i.spriteW, i.spriteW};
             i.currentFrame += 1;
         }
+    }
+
+    KeyEvent SDLGraphicLibrary::handleInputs() {
+        SDL_Event event;
+        KeyEvent input = KeyEvent::NONE;
+
+        while (SDL_PollEvent(&event) != 0) {
+            if (event.type == SDL_QUIT) {
+                closeWindow();
+                std::exit(0);
+            }
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        input = KeyEvent::ESCAPE;
+                        break;
+                    case SDLK_RIGHT:
+                        input = KeyEvent::RIGHT;
+                        break;
+                    case SDLK_LEFT:
+                        input = KeyEvent::LEFT;
+                        break;
+                    case SDLK_DOWN:
+                        input = KeyEvent::DOWN;
+                        break;
+                    case SDLK_UP:
+                        input = KeyEvent::UP;
+                        break;
+                    case SDLK_z:
+                        input = KeyEvent::z;
+                        break;
+                    case SDLK_q:
+                        input = KeyEvent::q;
+                        break;
+                    case SDLK_s:
+                        input = KeyEvent::s;
+                        break;
+                    case SDLK_d:
+                        input = KeyEvent::d;
+                        break;
+                }
+            }
+        }
+        return input;
     }
 
     extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {

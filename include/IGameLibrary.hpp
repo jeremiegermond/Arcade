@@ -8,13 +8,17 @@
 #ifndef ARCADE_IGAMELIBRARY_HPP
 #define ARCADE_IGAMELIBRARY_HPP
 
+#include "IGraphicLibrary.hpp"
+
 namespace arcade {
-    
+
 class IGameLibrary {
     public:
         virtual ~IGameLibrary() = default;
-        virtual void setGameObjects() {}
-        virtual std::vector<object> getGameObjects() { return std::vector<object>(); }
+        virtual void setGameObjects() = 0;
+        virtual std::vector<object> getGameObjects() = 0;
+        virtual void updateGameObjects() = 0;
+        virtual void setKeyEvent(KeyEvent event) = 0;
 };
 
 extern "C" IGameLibrary *create_game();

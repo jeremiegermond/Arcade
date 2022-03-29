@@ -12,6 +12,21 @@
 
 namespace arcade {
 
+enum class KeyEvent {
+    NONE,
+    LEFT,
+    UP,
+    DOWN,
+    RIGHT,
+    ESCAPE,
+    ENTER,
+    z,
+    q,
+    s,
+    d
+};
+
+
 class IGraphicLibrary {
     public:
         struct Parameters {
@@ -30,11 +45,11 @@ class IGraphicLibrary {
         };
 
         virtual ~IGraphicLibrary() = default;
-        virtual void createWindow() {}
-        virtual std::string getName() const { return ""; }
-        virtual void closeWindow() {}
-        virtual void loadObjects(std::vector<object> gameObjects) {}
-        virtual void loop() {}
+        virtual void createWindow() = 0;
+        virtual std::string getName() const = 0;
+        virtual void closeWindow() = 0;
+        virtual void loadObjects(std::vector<object> gameObjects) = 0;
+        virtual KeyEvent loop() = 0;
 };
 
 }
