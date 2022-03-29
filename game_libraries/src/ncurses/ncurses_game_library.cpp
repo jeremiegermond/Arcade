@@ -10,6 +10,7 @@
 #include <iostream>
 #include <thread>
 
+
 namespace arcade {
 
 NCursesGraphicLibrary::NCursesGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters) {}

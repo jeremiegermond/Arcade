@@ -1,6 +1,8 @@
 project(arcade)
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set (CMAKE_CXX_FLAGS "-std=c++17 -g3 -Wall -O0")
+
 
 include_directories(include)
 
