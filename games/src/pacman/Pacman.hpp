@@ -13,10 +13,14 @@
 #include <memory>
 #include <iostream>
 #include <array>
+#include <chrono>
+
+
+#define NOW std::chrono::high_resolution_clock::now()
 
 namespace arcade {
 
-class Pacman : public GameLibrary {
+    class Pacman : public GameLibrary {
     private:
         void setGameObjects() override;
         void updateGameObjects() override;
@@ -26,11 +30,19 @@ class Pacman : public GameLibrary {
         void readMap();
         void handlePacmanMovement();
         void setDirection();
-        bool checkMovement(object entity, Direction direction);
-        std::string map;
+        void checkMovement(object &entity);
+        bool updateByTime();
+        bool checkColision(object &entity);
+        static bool isInt(float val);
+        void setPacmanRotation();
+
+        std::vector<std::string> map;
         object pacman;
         std::vector<object> walls;
         std::array<object, 4> phantoms;
+        std::chrono::high_resolution_clock::time_point chrono;
+        const std::chrono::duration<long, std::ratio<1, 1000>>::rep timeUpdate;
+
     public:
         Pacman();
         ~Pacman();

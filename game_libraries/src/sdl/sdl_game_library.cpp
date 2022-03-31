@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(40) {
+SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(50), refreshTimeUnit(150) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw Exception("Cannot initialize SDL: " + std::string(SDL_GetError()));
     }
@@ -82,13 +82,13 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
         SDL_RenderClear(renderer);
         for (auto &i: entityObjects) {
             i.sdlDstRect = {*i.posX * gameSizeUnit, *i.posY * gameSizeUnit, i.sizeW * gameSizeUnit, i.sizeH * gameSizeUnit};
-            SDL_RenderCopyEx(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
+            SDL_RenderCopyExF(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
         }
         for (auto &i: textObjects) {
-            SDL_RenderCopy(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
+            SDL_RenderCopyF(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
         }
         SDL_RenderPresent(renderer);
-        if (SDL_GetTicks() > lastTime + 150) {
+        if (SDL_GetTicks() > lastTime + refreshTimeUnit) {
             animateEntityObject();
             lastTime = SDL_GetTicks();
         }
@@ -109,7 +109,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
             throw arcade::Exception("surface is null");
         }
         castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, 200, 100};
-        SDL_RenderCopy(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
+        SDL_RenderCopyF(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
 
         textObjects.push_back(castedObject);
     }

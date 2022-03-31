@@ -20,7 +20,7 @@ class GameLibrary : public IGameLibrary {
         std::vector<object> gameObjects;
         object gameText;
         KeyEvent event;
-        virtual void updateGameObjects() {}
+        void updateGameObjects() override {}
     public:
         GameLibrary() = default;
         ~GameLibrary() override = default;

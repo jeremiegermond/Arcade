@@ -18,7 +18,7 @@
 namespace arcade {
 
 struct sdlObject : public arcade::object {
-    SDL_Rect sdlDstRect{};
+    SDL_FRect sdlDstRect{};
     SDL_Rect sdlSrcRect{};
     SDL_Texture *sdlTexture{};
     SDL_Surface *sdlSurface{};
@@ -37,7 +37,8 @@ class SDLGraphicLibrary : public GraphicLibrary {
         SDL_Color textColor;
         bool started;
         unsigned int lastTime;
-        int gameSizeUnit;
+        float gameSizeUnit;
+        int refreshTimeUnit;
 
         void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);

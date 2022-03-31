@@ -38,8 +38,8 @@ struct object
     std::string texturePath;
     std::string text;
     char chr;
-    std::shared_ptr<int> posX { new int() };
-    std::shared_ptr<int> posY { new int() };
+    std::shared_ptr<float> posX { new float() };
+    std::shared_ptr<float> posY { new float() };
     int animX;
     int animY;
     int animW;
@@ -54,6 +54,7 @@ struct object
     int currentFrame;
     int maxFrame;
     std::shared_ptr<Direction> direction { new Direction() };
+    std::shared_ptr<Direction> bufferedDirection { new Direction() };
 };
 
 }

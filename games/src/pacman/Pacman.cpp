@@ -8,19 +8,23 @@
 #include "Pacman.hpp"
 #include "game_library.hpp"
 #include <fstream>
-#include <iostream>
 #include <sstream>
+#include <iterator>
 
 namespace arcade {
 
-Pacman::Pacman() : GameLibrary()
+Pacman::Pacman() : GameLibrary(), timeUpdate(30)
 {
-    std::cout << "PACMAN" << std::endl;
     std::ifstream mapfile("./assets/pacman.map");
-    std::stringstream buffer;
+    std::stringstream ss;
+    ss << mapfile.rdbuf();
 
-    buffer << mapfile.rdbuf();
-    map = buffer.str();
+    std::istream_iterator<std::string> begin(ss);
+    std::istream_iterator<std::string> end;
+    std::vector<std::string> vstrings(begin, end);
+
+    map = vstrings;
+    mapfile.close();
 }
 
 Pacman::~Pacman()
@@ -29,38 +33,40 @@ Pacman::~Pacman()
 void Pacman::setGameObjects()
 {
     gameText.text = "Pacman";
-    *gameText.posX = 20;
+    *gameText.posX = 0;
     *gameText.posY = 0;
     gameText.type = Type::TEXT;
     gameObjects.push_back(gameText);
     readMap();
+    chrono = NOW;
 }
 
     void Pacman::updateGameObjects() {
         setDirection();
+        if (updateByTime()) {
+            handlePacmanMovement();
+       }
     }
-
 
     void Pacman::readMap() {
         int posX = 0;
         int posY = 0;
         int index = 0;
 
-        for (auto &i : map) {
-            posX++;
-            if (i == '\n') {
-                posX = 0;
-                posY++;
-                continue;
+        for (auto &lines : map) {
+            for (auto &i: lines) {
+                posX++;
+                if (i == 'X') {
+                    initWall(posX, posY, index);
+                } else if (i == 'O') {
+                    initPacman(posX, posY);
+                } else if (i == 'P') {
+                    initPhantoms(posX, posY);
+                }
+                index++;
             }
-            if (i == 'X') {
-                initWall(posX, posY, index);
-            } else if (i == 'O') {
-                initPacman(posX, posY);
-            } else if (i == 'P') {
-                initPhantoms(posX, posY);
-            }
-            index++;
+            posX = 0;
+            posY++;
         }
     }
 
@@ -137,32 +143,115 @@ void Pacman::setGameObjects()
     }
 
     void Pacman::handlePacmanMovement() {
-//        if (*pacman.direction == Direction::UP && )
+        checkMovement(pacman);
     }
 
     void Pacman::setDirection() {
         switch (event) {
             case KeyEvent::z:
-                *pacman.direction = Direction::UP;
+                *pacman.bufferedDirection = Direction::UP;
                 break;
             case KeyEvent::q:
-                *pacman.direction = Direction::LEFT;
+                *pacman.bufferedDirection = Direction::LEFT;
                 break;
             case KeyEvent::s:
-                *pacman.direction = Direction::DOWN;
+                *pacman.bufferedDirection = Direction::DOWN;
                 break;
             case KeyEvent::d:
-                *pacman.direction = Direction::RIGHT;
+                *pacman.bufferedDirection = Direction::RIGHT;
                 break;
+            default:
+                break;
+        }
+        if (isInt(*pacman.posX) && isInt(*pacman.posY)) {
+            *pacman.direction = *pacman.bufferedDirection;
+            setPacmanRotation();
         }
     }
 
-    bool Pacman::checkMovement(object entity, Direction direction) {
-        if (direction == Direction::UP) {
+    void Pacman::checkMovement(object &entity) {
+        auto newPosX = *entity.posX;
+        auto newPosY = *entity.posY;
 
+
+        switch (*entity.direction) {
+            case Direction::RIGHT:
+                newPosX += .1;
+                break;
+            case Direction::DOWN:
+                newPosY += .1;
+                break;
+            case Direction::UP:
+                newPosY -= .1;
+                break;
+            case Direction::LEFT:
+                newPosX -= .1;
+                break;
+        }
+        if (checkColision(entity)) {
+            *entity.posX = newPosX;
+            *entity.posY = newPosY;
+        }
+    }
+
+    bool Pacman::updateByTime() {
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(NOW - chrono).count() > timeUpdate) {
+            chrono = NOW;
+            return true;
         }
         return false;
     }
+
+    bool Pacman::checkColision(object &entity) {
+        float colisionLocationX = *entity.posX;
+        float colisionLocationY = *entity.posY;
+
+        switch (*entity.direction) {
+            case Direction::RIGHT:
+                colisionLocationX += 1;
+                break;
+            case Direction::DOWN:
+                colisionLocationY += 1;
+                break;
+            case Direction::UP:
+                colisionLocationY -= .1;
+                break;
+            case Direction::LEFT:
+                colisionLocationX -= .1;
+                break;
+        }
+        for (auto &i : walls) {
+            if (int (*i.posX) == int (colisionLocationX) && int (*i.posY) == int (colisionLocationY)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool Pacman::isInt(float val) {
+        if (int (val * 10) == int (val) * 10) {
+            return true;
+        }
+        return false;
+    }
+
+    void Pacman::setPacmanRotation() {
+        switch (*pacman.direction) {
+            case Direction::RIGHT:
+                *pacman.rotation = 180;
+                break;
+            case Direction::DOWN:
+                *pacman.rotation = 270;
+                break;
+            case Direction::UP:
+                *pacman.rotation = 90;
+                break;
+            case Direction::LEFT:
+                *pacman.rotation = 0;
+                break;
+        }
+    }
+
 
     extern "C" IGameLibrary* create_game() {
         return new Pacman();
