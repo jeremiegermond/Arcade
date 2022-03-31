@@ -57,7 +57,6 @@ void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
 }
 
 KeyEvent NCursesGraphicLibrary::loop() {
-    renderTextObjects();
     std::this_thread::sleep_for(std::chrono::seconds(2));
     return KeyEvent::NONE;
 }
@@ -66,18 +65,18 @@ void NCursesGraphicLibrary::initTextObjects(object &gameObject) {
     textObjects.push_back(gameObject);
 }
 
-void NCursesGraphicLibrary::renderTextObjects() {
-    for (auto &object: textObjects) {
-        mvwaddstr(window, *object.posY, *object.posX, &object.text[0]);
-        wrefresh(window);
-    }
-}
 
 KeyEvent NCursesGraphicLibrary::handleInputs() {
     return KeyEvent::NONE;
 }
 
-    extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
+    void NCursesGraphicLibrary::drawTextObject() {
+    }
+
+    void NCursesGraphicLibrary::drawEntityObject() {
+    }
+
+extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
     return new NCursesGraphicLibrary(parameters);
 }
 

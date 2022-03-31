@@ -23,7 +23,8 @@ class NCursesGraphicLibrary : public GraphicLibrary {
         std::vector<object> textObjects;
 
         void initTextObjects(object &gameObject);
-        void renderTextObjects();
+        void drawEntityObject() override;
+        void drawTextObject() override;
         KeyEvent handleInputs();
     public:
         NCursesGraphicLibrary(const Parameters &parameters);
