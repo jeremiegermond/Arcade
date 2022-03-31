@@ -38,6 +38,7 @@ void NCursesGraphicLibrary::createWindow() {
     }
     wrefresh(this->window);
     curs_set(0);
+    start_color();
 }
 
 std::string NCursesGraphicLibrary::getName() const {
@@ -120,8 +121,21 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     }
 
     void NCursesGraphicLibrary::drawEntityObject() {
+        init_pair(0, COLOR_BLUE, COLOR_BLACK);
+        init_pair(1, COLOR_YELLOW, COLOR_BLACK);
+        
         for (auto &i: entityObjects) {
             wmove(window, *i.posY, *i.posX);
+            switch (i.chr) {
+                case 'X':
+                    attron(COLOR_PAIR(0));
+                    break;
+                case 'O':
+                    attron(COLOR_PAIR(1));
+                    break;
+                default:
+                    break;
+            }
             waddch(window, i.chr);
         }
     }
