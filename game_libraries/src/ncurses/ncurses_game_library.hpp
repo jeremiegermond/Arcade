@@ -21,8 +21,10 @@ class NCursesGraphicLibrary : public GraphicLibrary {
     private:
         WINDOW *window;
         std::vector<object> textObjects;
+        std::vector<object> entityObjects;
 
         void initTextObjects(object &gameObject);
+        void initEntityObjects(object &gameObject);
         void drawEntityObject() override;
         void drawTextObject() override;
         KeyEvent handleInputs();

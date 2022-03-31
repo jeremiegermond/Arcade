@@ -58,6 +58,7 @@ void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
 
 KeyEvent NCursesGraphicLibrary::loop() {
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    refresh();
     return KeyEvent::NONE;
 }
 
@@ -65,15 +66,55 @@ void NCursesGraphicLibrary::initTextObjects(object &gameObject) {
     textObjects.push_back(gameObject);
 }
 
+void NCursesGraphicLibrary::initEntityObjects(object &gameObject) {
+    entityObjects.push_back(gameObject);
+}
 
 KeyEvent NCursesGraphicLibrary::handleInputs() {
-    return KeyEvent::NONE;
+    KeyEvent input = KeyEvent::NONE;
+    int key = getch();
+    
+    switch (key)
+    {
+    case KEY_UP:
+        input = KeyEvent::UP;
+        break;
+    case KEY_DOWN:
+        input = KeyEvent::DOWN;
+        break;
+    case KEY_LEFT:
+        input = KeyEvent::LEFT;
+        break;
+    case KEY_RIGHT:
+        input = KeyEvent::RIGHT;
+        break;
+    case KEY_EXIT:
+        input = KeyEvent::ESCAPE;
+        break;
+    case ord('z'):
+        input = KeyEvent::z;
+        break;
+    case ord('q'):
+        input = KeyEvent::q;
+        break;
+    case ord('s'):
+        input = KeyEvent::s;
+        break;
+    case ord('d'):
+        input = KeyEvent::d;
+        break;
+    default:
+        break;
+    }
+    return input;
 }
 
     void NCursesGraphicLibrary::drawTextObject() {
+        if()
     }
 
     void NCursesGraphicLibrary::drawEntityObject() {
+        if()
     }
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
