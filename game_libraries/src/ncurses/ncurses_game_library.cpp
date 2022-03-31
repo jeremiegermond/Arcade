@@ -27,7 +27,7 @@ void NCursesGraphicLibrary::createWindow() {
         throw Exception("Cannot init nCurses.");
     }
     this->window = newwin(
-        this->parameters.tilemap.height, 
+        this->parameters.tilemap.height,
         this->parameters.tilemap.width,
         0,
         0
@@ -50,6 +50,9 @@ void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
             case Type::TEXT:
                 initTextObjects(object);
                 break;
+            case Type::ENTITY:
+                initEntityObjects(object);
+                break;
             default:
                 break;
         }
@@ -57,9 +60,10 @@ void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
 }
 
 KeyEvent NCursesGraphicLibrary::loop() {
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    refresh();
-    return KeyEvent::NONE;
+    drawEntityObject();
+    wrefresh(this->window);
+
+    return handleInputs();
 }
 
 void NCursesGraphicLibrary::initTextObjects(object &gameObject) {
@@ -109,11 +113,18 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     return input;
 }
 
-void NCursesGraphicLibrary::drawTextObject() {
-}
+    void NCursesGraphicLibrary::drawTextObject() {
+        for (auto &i: textObjects) {
+//            mvprintw(, i.text.c_str());
+        }
+    }
 
-void NCursesGraphicLibrary::drawEntityObject() {
-}
+    void NCursesGraphicLibrary::drawEntityObject() {
+        for (auto &i: entityObjects) {
+            wmove(window, *i.posY, *i.posX);
+            waddch(window, i.chr);
+        }
+    }
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
     return new NCursesGraphicLibrary(parameters);
