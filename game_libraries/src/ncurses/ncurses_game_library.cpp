@@ -91,16 +91,16 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     case KEY_EXIT:
         input = KeyEvent::ESCAPE;
         break;
-    case ord('z'):
+    case 'z':
         input = KeyEvent::z;
         break;
-    case ord('q'):
+    case 'q':
         input = KeyEvent::q;
         break;
-    case ord('s'):
+    case 's':
         input = KeyEvent::s;
         break;
-    case ord('d'):
+    case 'd':
         input = KeyEvent::d;
         break;
     default:
@@ -109,13 +109,11 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     return input;
 }
 
-    void NCursesGraphicLibrary::drawTextObject() {
-        if()
-    }
+void NCursesGraphicLibrary::drawTextObject() {
+}
 
-    void NCursesGraphicLibrary::drawEntityObject() {
-        if()
-    }
+void NCursesGraphicLibrary::drawEntityObject() {
+}
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
     return new NCursesGraphicLibrary(parameters);

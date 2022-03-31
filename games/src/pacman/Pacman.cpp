@@ -60,8 +60,12 @@ void Pacman::setGameObjects()
                     initWall(posX, posY, index);
                 } else if (i == 'O') {
                     initPacman(posX, posY);
-                } else if (i == 'P') {
-                    initPhantoms(posX, posY);
+                } else if (i == 'P' || i == 'M' || i == 'U' || i == 'L') {
+                    initPhantoms(posX, posY, i);
+                } else if (i == '.') {
+                    initPacgums(posX, posY);
+                } else if (i == 'C') {
+                    initBigPacgums(posX, posY);
                 }
                 index++;
             }
@@ -117,29 +121,79 @@ void Pacman::setGameObjects()
         gameObjects.push_back(pacman);
     }
 
-    void Pacman::initPhantoms(int posX, int posY) {
-        static int phantom_nbr = 1;
+    void Pacman::initPhantoms(int posX, int posY, char chr) {
+        static int phantom_nbr = 0;
 
-        phantoms[phantom_nbr - 1].texturePath = "./assets/pacman.png";
-        phantoms[phantom_nbr - 1].chr = 'P';
-        phantoms[phantom_nbr - 1].maxFrame = 2;
-        phantoms[phantom_nbr - 1].type = Type::ENTITY;
-        phantoms[phantom_nbr - 1].animX = 120;
-        phantoms[phantom_nbr - 1].animY = 80;
-        phantoms[phantom_nbr - 1].animW = 20;
-        phantoms[phantom_nbr - 1].animH = 0;
-        phantoms[phantom_nbr - 1].isAnimated = true;
-        phantoms[phantom_nbr - 1].spriteW = 20;
-        phantoms[phantom_nbr - 1].spriteH = 20;
-        phantoms[phantom_nbr - 1].sizeH = 1;
-        phantoms[phantom_nbr - 1].sizeW = 1;
-        *phantoms[phantom_nbr - 1].rotation = 0;
-        *phantoms[phantom_nbr - 1].posX = posX;
-        *phantoms[phantom_nbr - 1].posY = posY;
-        *phantoms[phantom_nbr - 1].mirrored = 0;
+        phantoms[phantom_nbr].texturePath = "./assets/pacman.png";
+        phantoms[phantom_nbr].chr = chr;
+        phantoms[phantom_nbr].maxFrame = 2;
+        phantoms[phantom_nbr].type = Type::ENTITY;
+        phantoms[phantom_nbr].animX = 120;
+        phantoms[phantom_nbr].animY = 80 + (phantom_nbr * 20);
+        phantoms[phantom_nbr].animW = 20;
+        phantoms[phantom_nbr].animH = 0;
+        phantoms[phantom_nbr].isAnimated = true;
+        phantoms[phantom_nbr].spriteW = 20;
+        phantoms[phantom_nbr].spriteH = 20;
+        phantoms[phantom_nbr].sizeH = 1;
+        phantoms[phantom_nbr].sizeW = 1;
+        *phantoms[phantom_nbr].rotation = 0;
+        *phantoms[phantom_nbr].posX = posX;
+        *phantoms[phantom_nbr].posY = posY;
+        *phantoms[phantom_nbr].mirrored = 0;
 
-        gameObjects.push_back(phantoms[phantom_nbr - 1]);
+        gameObjects.push_back(phantoms[phantom_nbr]);
         phantom_nbr++;
+    }
+
+    void Pacman::initPacgums(int posX, int posY) {
+        object newPacgums;
+
+        newPacgums.texturePath = "./assets/pacman.png";
+        newPacgums.chr = '.';
+        newPacgums.maxFrame = 0;
+        newPacgums.type = Type::ENTITY;
+        newPacgums.animX = 60;
+        newPacgums.animY = 0;
+        newPacgums.animW = 0;
+        newPacgums.animH = 0;
+        newPacgums.isAnimated = false;
+        newPacgums.spriteW = 20;
+        newPacgums.spriteH = 20;
+        newPacgums.sizeH = 1;
+        newPacgums.sizeW = 1;
+        *newPacgums.rotation = 0;
+        *newPacgums.posX = posX;
+        *newPacgums.posY = posY;
+        *newPacgums.mirrored = 0;
+
+        pacgums.push_back(newPacgums);
+        gameObjects.push_back(pacgums.back());
+    }
+
+    void Pacman::initBigPacgums(int posX, int posY) {
+        object newBigPacgums;
+
+        newBigPacgums.texturePath = "./assets/pacman.png";
+        newBigPacgums.chr = 'C';
+        newBigPacgums.maxFrame = 0;
+        newBigPacgums.type = Type::ENTITY;
+        newBigPacgums.animX = 60;
+        newBigPacgums.animY = 20;
+        newBigPacgums.animW = 0;
+        newBigPacgums.animH = 0;
+        newBigPacgums.isAnimated = false;
+        newBigPacgums.spriteW = 20;
+        newBigPacgums.spriteH = 20;
+        newBigPacgums.sizeH = 1;
+        newBigPacgums.sizeW = 1;
+        *newBigPacgums.rotation = 0;
+        *newBigPacgums.posX = posX;
+        *newBigPacgums.posY = posY;
+        *newBigPacgums.mirrored = 0;
+
+        bigPacgums.push_back(newBigPacgums);
+        gameObjects.push_back(bigPacgums.back());
     }
 
     void Pacman::handlePacmanMovement() {
@@ -148,16 +202,16 @@ void Pacman::setGameObjects()
 
     void Pacman::setDirection() {
         switch (event) {
-            case KeyEvent::z:
+            case KeyEvent::UP:
                 *pacman.bufferedDirection = Direction::UP;
                 break;
-            case KeyEvent::q:
+            case KeyEvent::LEFT:
                 *pacman.bufferedDirection = Direction::LEFT;
                 break;
-            case KeyEvent::s:
+            case KeyEvent::DOWN:
                 *pacman.bufferedDirection = Direction::DOWN;
                 break;
-            case KeyEvent::d:
+            case KeyEvent::RIGHT:
                 *pacman.bufferedDirection = Direction::RIGHT;
                 break;
             default:
@@ -251,7 +305,6 @@ void Pacman::setGameObjects()
                 break;
         }
     }
-
 
     extern "C" IGameLibrary* create_game() {
         return new Pacman();

@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(50), refreshTimeUnit(150) {
+SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(45), refreshTimeUnit(150) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw Exception("Cannot initialize SDL: " + std::string(SDL_GetError()));
     }

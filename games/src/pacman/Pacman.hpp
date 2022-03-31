@@ -26,7 +26,9 @@ namespace arcade {
         void updateGameObjects() override;
         void initWall(int posX, int posY, int index);
         void initPacman(int posX, int posY);
-        void initPhantoms(int posX, int posY);
+        void initPhantoms(int posX, int posY, char chr);
+        void initPacgums(int posX, int posY);
+        void initBigPacgums(int posX, int posY);
         void readMap();
         void handlePacmanMovement();
         void setDirection();
@@ -38,6 +40,8 @@ namespace arcade {
 
         std::vector<std::string> map;
         object pacman;
+        std::vector<object> pacgums;
+        std::vector<object> bigPacgums;
         std::vector<object> walls;
         std::array<object, 4> phantoms;
         std::chrono::high_resolution_clock::time_point chrono;
