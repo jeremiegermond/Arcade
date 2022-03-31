@@ -36,8 +36,8 @@ void NCursesGraphicLibrary::createWindow() {
     if (!this->window) {
         throw Exception("Cannot create _window.");
     }
-    box(this->window, 0, 0);
     wrefresh(this->window);
+    curs_set(0);
 }
 
 std::string NCursesGraphicLibrary::getName() const {
