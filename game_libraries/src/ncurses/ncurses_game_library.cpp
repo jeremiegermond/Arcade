@@ -73,7 +73,7 @@ void NCursesGraphicLibrary::initEntityObjects(object &gameObject) {
 KeyEvent NCursesGraphicLibrary::handleInputs() {
     KeyEvent input = KeyEvent::NONE;
     int key = getch();
-    
+
     switch (key)
     {
     case KEY_UP:
@@ -91,16 +91,16 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     case KEY_EXIT:
         input = KeyEvent::ESCAPE;
         break;
-    case ord('z'):
+    case 'z':
         input = KeyEvent::z;
         break;
-    case ord('q'):
+    case 'q':
         input = KeyEvent::q;
         break;
-    case ord('s'):
+    case 's':
         input = KeyEvent::s;
         break;
-    case ord('d'):
+    case 'd':
         input = KeyEvent::d;
         break;
     default:
@@ -110,11 +110,15 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
 }
 
     void NCursesGraphicLibrary::drawTextObject() {
-        if()
+        for (auto &i: textObjects) {
+            mvprintw(*i.posY, *i.posX, i.text);
+        }
     }
 
     void NCursesGraphicLibrary::drawEntityObject() {
-        if()
+        for (auto &i: entityObjects) {
+            mvprintw(*i.posY, *i.posX, i.chr);
+        }
     }
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
