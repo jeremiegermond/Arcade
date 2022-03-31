@@ -28,6 +28,10 @@ struct sdlObject : public arcade::object {
 
 
 class SDLGraphicLibrary : public GraphicLibrary {
+    protected:
+        void drawEntityObject() override;
+        void drawTextObject() override;
+
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;

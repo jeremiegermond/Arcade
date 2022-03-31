@@ -203,25 +203,25 @@ void Pacman::setGameObjects()
     }
 
     bool Pacman::checkColision(object &entity) {
-        float colisionLocationX = *entity.posX;
-        float colisionLocationY = *entity.posY;
+        float hitboxLocationX = *entity.posX;
+        float hitboxLocationY = *entity.posY;
 
         switch (*entity.direction) {
             case Direction::RIGHT:
-                colisionLocationX += 1;
+                hitboxLocationX += 1;
                 break;
             case Direction::DOWN:
-                colisionLocationY += 1;
+                hitboxLocationY += 1;
                 break;
             case Direction::UP:
-                colisionLocationY -= .1;
+                hitboxLocationY -= .1;
                 break;
             case Direction::LEFT:
-                colisionLocationX -= .1;
+                hitboxLocationX -= .1;
                 break;
         }
         for (auto &i : walls) {
-            if (int (*i.posX) == int (colisionLocationX) && int (*i.posY) == int (colisionLocationY)) {
+            if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY)) {
                 return false;
             }
         }

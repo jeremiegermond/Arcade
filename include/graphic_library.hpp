@@ -18,6 +18,9 @@ namespace arcade {
 class GraphicLibrary : public IGraphicLibrary {
     protected:
         Parameters parameters;
+
+        virtual void drawEntityObject() {};
+        virtual void drawTextObject() {};
     public:
         GraphicLibrary(const Parameters &parameters) : parameters(parameters) {}
         ~GraphicLibrary() = default;

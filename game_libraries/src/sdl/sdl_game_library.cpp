@@ -80,19 +80,27 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
     KeyEvent SDLGraphicLibrary::loop() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-        for (auto &i: entityObjects) {
-            i.sdlDstRect = {*i.posX * gameSizeUnit, *i.posY * gameSizeUnit, i.sizeW * gameSizeUnit, i.sizeH * gameSizeUnit};
-            SDL_RenderCopyExF(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
-        }
-        for (auto &i: textObjects) {
-            SDL_RenderCopyF(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
-        }
+        drawEntityObject();
+        drawTextObject();
         SDL_RenderPresent(renderer);
         if (SDL_GetTicks() > lastTime + refreshTimeUnit) {
             animateEntityObject();
             lastTime = SDL_GetTicks();
         }
         return handleInputs();
+    }
+
+    void SDLGraphicLibrary::drawEntityObject() {
+        for (auto &i: entityObjects) {
+            i.sdlDstRect = {*i.posX * gameSizeUnit, *i.posY * gameSizeUnit, i.sizeW * gameSizeUnit, i.sizeH * gameSizeUnit};
+            SDL_RenderCopyExF(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
+        }
+    }
+
+    void SDLGraphicLibrary::drawTextObject() {
+        for (auto &i: textObjects) {
+            SDL_RenderCopyF(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
+        }
     }
 
     void SDLGraphicLibrary::initTextObjects(object &gameObject) {
