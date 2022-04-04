@@ -25,11 +25,25 @@ set_target_properties(
         PREFIX ""
 )
 
+add_library(arcade_sfml SHARED)
+
+set_target_properties(
+        arcade_sfml
+        PROPERTIES
+        PREFIX ""
+)
+
 add_subdirectory(game_libraries)
 add_library(arcade_pacman SHARED)
 
 set_target_properties(
         arcade_pacman
+        PROPERTIES
+        PREFIX ""
+)
+
+set_target_properties(
+        arcade_nibbler
         PROPERTIES
         PREFIX ""
 )
