@@ -10,7 +10,6 @@
 #include <iostream>
 #include <thread>
 
-
 namespace arcade {
 
 NCursesGraphicLibrary::NCursesGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters) {}
@@ -80,69 +79,68 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     KeyEvent input = KeyEvent::NONE;
     int key = getch();
     
-    switch (key)
-    {
-    case KEY_UP:
-        input = KeyEvent::UP;
-        break;
-    case KEY_DOWN:
-        input = KeyEvent::DOWN;
-        break;
-    case KEY_LEFT:
-        input = KeyEvent::LEFT;
-        break;
-    case KEY_RIGHT:
-        input = KeyEvent::RIGHT;
-        break;
-    case KEY_EXIT:
-        input = KeyEvent::ESCAPE;
-        break;
-    case 'z':
-        input = KeyEvent::z;
-        break;
-    case 'q':
-        input = KeyEvent::q;
-        break;
-    case 's':
-        input = KeyEvent::s;
-        break;
-    case 'd':
-        input = KeyEvent::d;
-        break;
-    default:
-        break;
+    switch (key) {
+        case KEY_UP:
+            input = KeyEvent::UP;
+            break;
+        case KEY_DOWN:
+            input = KeyEvent::DOWN;
+            break;
+        case KEY_LEFT:
+            input = KeyEvent::LEFT;
+            break;
+        case KEY_RIGHT:
+            input = KeyEvent::RIGHT;
+            break;
+        case KEY_EXIT:
+            input = KeyEvent::ESCAPE;
+            break;
+        case 'z':
+            input = KeyEvent::z;
+            break;
+        case 'q':
+            input = KeyEvent::q;
+            break;
+        case 's':
+            input = KeyEvent::s;
+            break;
+        case 'd':
+            input = KeyEvent::d;
+            break;
+        default:
+            break;
     }
     return input;
 }
 
-    void NCursesGraphicLibrary::drawTextObject() {
-        for (auto &i: textObjects) {
-//            mvprintw(, i.text.c_str());
-        }
+void NCursesGraphicLibrary::drawTextObject() {
+    for (auto &i: textObjects) {
+        //mvprintw(, i.text.c_str());
     }
+}
 
-    void NCursesGraphicLibrary::drawEntityObject() {
-        init_pair(0, COLOR_BLUE, COLOR_BLACK);
-        init_pair(1, COLOR_YELLOW, COLOR_BLACK);
-        
-        for (auto &i: entityObjects) {
-            wmove(window, *i.posY, *i.posX);
-            switch (i.chr) {
-                case 'X':
-                    wattron(window, COLOR_PAIR(0));
-                    waddch(window, i.chr);
-                    wattroff(window, COLOR_PAIR(0));
-                    break;
-                case 'O':
-                    wattron(window, COLOR_PAIR(1));
-                    waddch(window, i.chr);
-                    wattroff(window, COLOR_PAIR(1));
-                    break;
-                default:
-                    break;
-            }
+void NCursesGraphicLibrary::drawEntityObject() {
+    init_pair(0, COLOR_BLUE, COLOR_BLACK);
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK);
+    
+    for (auto &i: entityObjects) {
+        wmove(window, *i.posY, *i.posX);
+        switch (i.chr) {
+            case 'X':
+                wattron(window, COLOR_PAIR(0));
+                waddch(window, i.chr);
+                wattroff(window, COLOR_PAIR(0));
+                break;
+            case 'O':
+                wattron(window, COLOR_PAIR(1));
+                waddch(window, i.chr);
+                wattroff(window, COLOR_PAIR(1));
+                break;
+            default:
+                break;
         }
     }
+}
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters) {
     return new NCursesGraphicLibrary(parameters);

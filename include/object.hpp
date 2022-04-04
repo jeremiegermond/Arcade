@@ -52,8 +52,8 @@ struct object
     std::shared_ptr<double> rotation { new double(0) };
     std::shared_ptr<int> mirrored { new int(0) };
     bool isAnimated;
-    int currentFrame;
-    int maxFrame;
+    int currentFrame = 0;
+    int maxFrame = 0;
     std::shared_ptr<Direction> direction { new Direction(Direction::RIGHT) };
     std::shared_ptr<Direction> bufferedDirection { new Direction(Direction::RIGHT) };
     std::shared_ptr<int> alpha { new int(255) };

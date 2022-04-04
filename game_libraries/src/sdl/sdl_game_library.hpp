@@ -40,9 +40,9 @@ class SDLGraphicLibrary : public GraphicLibrary {
         TTF_Font *Sans;
         SDL_Color textColor;
         bool started;
-        unsigned int lastTime;
+        unsigned int lastTime = 0;
         float gameSizeUnit;
-        int refreshTimeUnit;
+        int refreshTimeUnit = 0;
 
         void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);

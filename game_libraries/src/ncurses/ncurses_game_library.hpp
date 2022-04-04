@@ -7,8 +7,6 @@
 
 #pragma once
 
-#pragma once
-
 #include "graphic_library.hpp"
 #include <ncurses.h>
 #include "exception.hpp"
