@@ -13,7 +13,7 @@
 
 namespace arcade {
 
-Pacman::Pacman() : GameLibrary(), pacmanSpeed(1), fantomsSpeed(1.1), invicible(false), timeUpdate(20), timeInvicibility(10000), started(false), pacgumsNumber(0), initialFantomsSpeed(1.1)
+Pacman::Pacman() : GameLibrary(), pacmanSpeed(1), fantomsSpeed(1.1), initialFantomsSpeed(1.1), invicible(false), phantomSpawnX(0), phantomSpawnY(0), started(false), pacgumsNumber(0), totalPacgums(0), timeUpdate(20), timeInvicibility(10000)
 {
     std::ifstream mapfile("./assets/pacman.map");
     std::stringstream ss;
