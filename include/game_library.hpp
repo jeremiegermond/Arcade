@@ -19,6 +19,8 @@ class GameLibrary : public IGameLibrary {
     protected:
         std::vector<object> gameObjects;
         object gameText;
+        object scoreText;
+        int score;
         KeyEvent event;
         void updateGameObjects() override {}
     public:

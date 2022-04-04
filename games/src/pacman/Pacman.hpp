@@ -29,23 +29,53 @@ namespace arcade {
         void initPhantoms(int posX, int posY, char chr);
         void initPacgums(int posX, int posY);
         void initBigPacgums(int posX, int posY);
+        void initTeleporters(int posX, int posY);
         void readMap();
         void handlePacmanMovement();
+        void handleTeleportation();
         void setDirection();
-        void checkMovement(object &entity);
+        bool checkMovement(object &entity, float speed);
         bool updateByTime();
-        bool checkColision(object &entity);
+        bool checkColision(object &entity, float speed);
         static bool isInt(float val);
         void setPacmanRotation();
+        void handlePacgumColision();
+        void handlePhantomsMovement();
+        void setRandomDirection(object &entity);
+        void handlePhantomColision();
+        void gameEnd();
+        void resetGame();
+        void resetPhantom(int posX, int posY);
+        void resetPacman(int posX, int posY);
+        void resetPacgums();
+        void handleInvicibility();
+        void handlePacmanEatPhantom(object &i);
+        void handleDeadPhantom(object &i);
+        void updateScore();
+        bool handleBeginOrEnd();
+        void handleWin();
+
 
         std::vector<std::string> map;
         object pacman;
+        float pacmanSpeed;
+        float fantomsSpeed;
+        float initialFantomsSpeed;
+        bool invicible;
+        int phantomSpawnX;
+        int phantomSpawnY;
+        bool started;
+        int pacgumsNumber;
+        int totalPacgums;
         std::vector<object> pacgums;
         std::vector<object> bigPacgums;
         std::vector<object> walls;
+        std::array<object, 2> teleporters;
         std::array<object, 4> phantoms;
         std::chrono::high_resolution_clock::time_point chrono;
-        const std::chrono::duration<long, std::ratio<1, 1000>>::rep timeUpdate;
+        std::chrono::high_resolution_clock::time_point chrono_invicibility;
+        std::chrono::duration<long, std::ratio<1, 1000>>::rep timeUpdate;
+        std::chrono::duration<long, std::ratio<1, 1000>>::rep timeInvicibility;
 
     public:
         Pacman();

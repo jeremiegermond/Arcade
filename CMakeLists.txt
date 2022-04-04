@@ -35,4 +35,8 @@ set_target_properties(
 )
 
 add_subdirectory(games)
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+add_custom_command(
+        TARGET arcade
+        POST_BUILD COMMAND ${CMAKE_COMMAND}
+        -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+)

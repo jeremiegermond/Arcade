@@ -47,7 +47,6 @@ class SDLGraphicLibrary : public GraphicLibrary {
         void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);
         void animateEntityObject();
-        void initMapObject(object &gameObject);
         KeyEvent handleInputs();
     public:
         SDLGraphicLibrary(const Parameters &parameters);

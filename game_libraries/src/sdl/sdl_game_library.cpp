@@ -93,12 +93,19 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
     void SDLGraphicLibrary::drawEntityObject() {
         for (auto &i: entityObjects) {
             i.sdlDstRect = {*i.posX * gameSizeUnit, *i.posY * gameSizeUnit, i.sizeW * gameSizeUnit, i.sizeH * gameSizeUnit};
-            SDL_RenderCopyExF(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr, (SDL_RendererFlip)*i.mirrored);
+            if (*i.state != State::NONE) {
+                SDL_SetTextureAlphaMod(i.sdlTexture, *i.alpha);
+                SDL_RenderCopyExF(renderer, i.sdlTexture, &i.sdlSrcRect, &i.sdlDstRect, *i.rotation, nullptr,
+                                  (SDL_RendererFlip) *i.mirrored);
+            }
         }
     }
 
     void SDLGraphicLibrary::drawTextObject() {
         for (auto &i: textObjects) {
+            SDL_FreeSurface(i.sdlSurface);
+            i.sdlSurface = TTF_RenderText_Solid(Sans, i.text->c_str(), textColor);
+            i.sdlTexture = SDL_CreateTextureFromSurface(renderer, i.sdlSurface);
             SDL_RenderCopyF(renderer, i.sdlTexture, nullptr, &i.sdlDstRect);
         }
     }
@@ -106,7 +113,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
     void SDLGraphicLibrary::initTextObjects(object &gameObject) {
         sdlObject castedObject(gameObject);
 
-        castedObject.sdlSurface = TTF_RenderText_Solid(Sans, castedObject.text.c_str(), textColor);
+        castedObject.sdlSurface = TTF_RenderText_Solid(Sans, castedObject.text->c_str(), textColor);
         if (castedObject.sdlSurface == nullptr) {
             std::cout << SDL_GetError() << std::endl;
             throw arcade::Exception("texture is null");
@@ -116,7 +123,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
             std::cout << SDL_GetError() << std::endl;
             throw arcade::Exception("surface is null");
         }
-        castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, 200, 100};
+        castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, gameSizeUnit * castedObject.sizeW, gameSizeUnit * castedObject.sizeH};
         SDL_RenderCopyF(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
 
         textObjects.push_back(castedObject);
@@ -131,15 +138,16 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
             throw arcade::Exception("texture is null");
         }
         castedObject.sdlTexture = SDL_CreateTextureFromSurface(renderer, castedObject.sdlSurface);
+        SDL_SetTextureBlendMode(castedObject.sdlTexture, SDL_BLENDMODE_BLEND);
         if (castedObject.sdlTexture == nullptr) {
             std::cout << SDL_GetError() << std::endl;
             throw arcade::Exception("surface is null");
         }
         castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, castedObject.sizeW * gameSizeUnit, castedObject.sizeH * gameSizeUnit};
         if (castedObject.isAnimated)
-            castedObject.sdlSrcRect = {castedObject.animX + castedObject.animW * castedObject.currentFrame, castedObject.animY + castedObject.animH * castedObject.currentFrame, castedObject.spriteW, castedObject.spriteH};
+            castedObject.sdlSrcRect = {*castedObject.animX + *castedObject.animW * castedObject.currentFrame, *castedObject.animY + *castedObject.animH * castedObject.currentFrame, *castedObject.spriteW, *castedObject.spriteH};
         else
-            castedObject.sdlSrcRect = {castedObject.animX + castedObject.animW, castedObject.animY + castedObject.animH, castedObject.spriteW, castedObject.spriteH};
+            castedObject.sdlSrcRect = {*castedObject.animX + *castedObject.animW, *castedObject.animY + *castedObject.animH, *castedObject.spriteW, *castedObject.spriteH};
 
         entityObjects.push_back(castedObject);
     }
@@ -150,7 +158,7 @@ void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
                 continue;
             if (i.currentFrame >= i.maxFrame)
                 i.currentFrame = 0;
-            i.sdlSrcRect = {i.animX + i.animW * i.currentFrame, i.animY + i.animH * i.currentFrame, i.spriteW, i.spriteW};
+            i.sdlSrcRect = {*i.animX + *i.animW * i.currentFrame, *i.animY + *i.animH * i.currentFrame, *i.spriteW, *i.spriteW};
             i.currentFrame += 1;
         }
     }

@@ -63,6 +63,7 @@ void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
 KeyEvent NCursesGraphicLibrary::loop() {
     drawEntityObject();
     wrefresh(this->window);
+    wclear(window);
 
     return handleInputs();
 }
@@ -128,15 +129,18 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
             wmove(window, *i.posY, *i.posX);
             switch (i.chr) {
                 case 'X':
-                    attron(COLOR_PAIR(0));
+                    wattron(window, COLOR_PAIR(0));
+                    waddch(window, i.chr);
+                    wattroff(window, COLOR_PAIR(0));
                     break;
                 case 'O':
-                    attron(COLOR_PAIR(1));
+                    wattron(window, COLOR_PAIR(1));
+                    waddch(window, i.chr);
+                    wattroff(window, COLOR_PAIR(1));
                     break;
                 default:
                     break;
             }
-            waddch(window, i.chr);
         }
     }
 
