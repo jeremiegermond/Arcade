@@ -16,6 +16,11 @@ target_sources(
         src/ncurses/ncurses_game_library.cpp
 )
 
+target_sources(
+        arcade_sfml PUBLIC
+        src/sfml/sfml_game_library.cpp
+)
+
 find_package(Curses REQUIRED)
 target_include_directories(arcade_ncurses PUBLIC ${CURSES_INCLUDE_DIR})
 target_link_libraries(arcade_ncurses ${CURSES_LIBRARIES})

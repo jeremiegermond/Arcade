@@ -70,7 +70,7 @@ KeyEvent NCursesGraphicLibrary::loop() {
         wrefresh(this->window);
     }
 
-    return handleInputs();//handleInputs();
+    return handleInputs();
 }
 
 void NCursesGraphicLibrary::initTextObjects(object &gameObject) {

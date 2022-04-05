@@ -30,8 +30,7 @@ IGraphicLibrary * DynamicLibrary::create(const IGraphicLibrary::Parameters &para
     return create(parameters);
 }
 
-IGameLibrary * DynamicLibrary::create_game()
-{
+IGameLibrary * DynamicLibrary::create_game() {
     void *fptr = dlsym(this->handle.get(), "create_game");
 
     if (!fptr) {

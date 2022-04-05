@@ -7,43 +7,38 @@
 
 #include "Arcade.hpp"
 #include "exception.hpp"
-#include <thread>
 
 namespace arcade {
 
-    Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
-        arcade::GraphicLibrary::Parameters parameters {
-                .window = {
-                        .title = "Arcade",
-                        .width = 1920,
-                        .height = 1080
-                },
-                .tilemap = {
-                        .width = 76,
-                        .height = 22
-                }
-        };
+Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
+    GraphicLibrary::Parameters parameters {
+        .window = {
+            .title = "Arcade",
+            .width = 1920,
+            .height = 1080
+        },
+        .tilemap = {
+            .width = 76,
+            .height = 22
+        }
+    };
+    lib_sdl2 = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL));
+    sdl2.reset(lib_sdl2->create(parameters));
 
-        lib_sdl2 = std::make_unique<arcade::DynamicLibrary>(arcade::DynamicLibrary("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL));
-        sdl2.reset(lib_sdl2->create(parameters));
-        std::cout << sdl2->getName() << std::endl;
+    lib_ncurses = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL));
+    ncurses.reset(lib_ncurses->create(parameters));
 
-        lib_ncurses = std::make_unique<arcade::DynamicLibrary>(arcade::DynamicLibrary("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL));
-        ncurses.reset(lib_ncurses->create(parameters));
-        std::cout << ncurses->getName() << std::endl;
+    game_lib = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL));
+    pacman.reset(game_lib->create_game());
+}
 
-        game_lib = std::make_unique<arcade::DynamicLibrary>(arcade::DynamicLibrary("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL));
-        pacman.reset(game_lib->create_game());
-    }
-
-    Arcade::~Arcade()
-    {
-        pacman.reset();
-        ncurses.reset();
-        sdl2.reset();
-        currentGraphic.reset();
-        currentGame.reset();
-    }
+Arcade::~Arcade() {
+    pacman.reset();
+    ncurses.reset();
+    sdl2.reset();
+    currentGraphic.reset();
+    currentGame.reset();
+}
 
 
     void Arcade::run(const std::string& libName) {
@@ -63,14 +58,14 @@ namespace arcade {
         currentGraphic->closeWindow();
     }
 
-    void Arcade::setCurrentGraphicLib(const std::string &libName) {
-        if (libName == "./lib/arcade_sdl2.so")
-            currentGraphic = sdl2;
-        else if (libName == "./lib/arcade_ncurses.so")
-            currentGraphic = ncurses;
-        else
-            throw arcade::Exception("invalid lib path");
-    }
+void Arcade::setCurrentGraphicLib(const std::string &libName) {
+    if (libName == "./lib/arcade_sdl2.so")
+        currentGraphic = sdl2;
+    else if (libName == "./lib/arcade_ncurses.so")
+        currentGraphic = ncurses;
+    else
+        throw arcade::Exception("invalid lib path");
+}
 
     void Arcade::handleKeyEvents() {
         if (input == KeyEvent::q)

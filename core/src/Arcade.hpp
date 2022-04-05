@@ -17,30 +17,27 @@
 
 namespace arcade {
 
-    class Arcade {
-        public:
-            Arcade();
-            ~Arcade();
-            void run(const std::string& libName);
-            void switchLib();
+class Arcade {
+    public:
+        Arcade();
+        ~Arcade();
+        void run(const std::string &libName);
+        void switchLib();
+    private:
+        std::shared_ptr<IGraphicLibrary> sdl2;
+        std::shared_ptr<IGraphicLibrary> ncurses;
+        std::shared_ptr<IGraphicLibrary> currentGraphic;
+        std::shared_ptr<IGameLibrary> pacman;
+        std::shared_ptr<IGameLibrary> currentGame;
+        std::unique_ptr<DynamicLibrary> lib_sdl2;
+        std::unique_ptr<DynamicLibrary> lib_ncurses;
+        std::unique_ptr<DynamicLibrary> game_lib;
+        KeyEvent input;
+        bool running;
 
-        protected:
-
-        private:
-            std::shared_ptr<arcade::IGraphicLibrary> sdl2;
-            std::shared_ptr<arcade::IGraphicLibrary> ncurses;
-            std::shared_ptr<arcade::IGraphicLibrary> currentGraphic;
-            std::shared_ptr<arcade::IGameLibrary> pacman;
-            std::shared_ptr<arcade::IGameLibrary> currentGame;
-            std::unique_ptr<arcade::DynamicLibrary> lib_sdl2;
-            std::unique_ptr<arcade::DynamicLibrary> lib_ncurses;
-            std::unique_ptr<arcade::DynamicLibrary> game_lib;
-            KeyEvent input;
-            bool running;
-
-            void setCurrentGraphicLib(const std::string& libName);
-            void handleKeyEvents();
-    };
+        void setCurrentGraphicLib(const std::string &libName);
+        void handleKeyEvents();
+};
 
 }
 

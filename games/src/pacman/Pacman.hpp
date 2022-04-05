@@ -20,7 +20,7 @@
 
 namespace arcade {
 
-    class Pacman : public GameLibrary {
+class Pacman : public GameLibrary {
     private:
         void setGameObjects() override;
         void updateGameObjects() override;
@@ -55,7 +55,6 @@ namespace arcade {
         bool handleBeginOrEnd();
         void handleWin();
 
-
         std::vector<std::string> map;
         object pacman;
         float pacmanSpeed;
@@ -79,8 +78,7 @@ namespace arcade {
 
     public:
         Pacman();
-        ~Pacman();
-
+        ~Pacman() = default;
 };
 
 }
