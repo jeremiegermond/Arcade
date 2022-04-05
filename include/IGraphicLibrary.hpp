@@ -1,6 +1,9 @@
-//
-// Created by leo on 2022-03-24.
-//
+/*
+** EPITECH PROJECT, 2022
+** B-OOP-400-LIL-4-1-arcade-marine.poteau
+** File description:
+** IGraphicLibrary
+*/
 
 #ifndef ARCADE_IGRAPHICLIBRARY_HPP
 #define ARCADE_IGRAPHICLIBRARY_HPP

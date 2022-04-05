@@ -18,7 +18,7 @@ SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibr
     TTF_Init();
     Sans = TTF_OpenFont("assets/Sans.ttf", 24);
     if (Sans == nullptr) {
-        throw arcade::Exception("Can't open font file");
+        throw Exception("Can't open font file");
     }
     textColor = {255, 255, 255};
 }
@@ -49,7 +49,7 @@ void SDLGraphicLibrary::createWindow() {
     );
 
     if (!this->window) {
-        throw Exception("Cannot create _window: " + std::string(SDL_GetError()));
+        throw Exception("Cannot create window: " + std::string(SDL_GetError()));
     }
 
     renderer = SDL_CreateRenderer(
@@ -115,12 +115,12 @@ void SDLGraphicLibrary::initTextObjects(object &gameObject) {
 
     if (castedObject.sdlSurface == nullptr) {
         std::cout << SDL_GetError() << std::endl;
-        throw arcade::Exception("texture is null");
+        throw Exception("texture is null");
     }
     castedObject.sdlTexture =  SDL_CreateTextureFromSurface(renderer, castedObject.sdlSurface);
     if (castedObject.sdlTexture == nullptr) {
         std::cout << SDL_GetError() << std::endl;
-        throw arcade::Exception("surface is null");
+        throw Exception("surface is null");
     }
     castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, gameSizeUnit * castedObject.sizeW, gameSizeUnit * castedObject.sizeH};
     SDL_RenderCopyF(renderer, castedObject.sdlTexture, nullptr, &castedObject.sdlDstRect);
@@ -134,13 +134,13 @@ void SDLGraphicLibrary::initEntityObjects(object &gameObject) {
 
     if (castedObject.sdlSurface == nullptr) {
         std::cout << SDL_GetError() << std::endl;
-        throw arcade::Exception("texture is null");
+        throw Exception("texture is null");
     }
     castedObject.sdlTexture = SDL_CreateTextureFromSurface(renderer, castedObject.sdlSurface);
     SDL_SetTextureBlendMode(castedObject.sdlTexture, SDL_BLENDMODE_BLEND);
     if (castedObject.sdlTexture == nullptr) {
         std::cout << SDL_GetError() << std::endl;
-        throw arcade::Exception("surface is null");
+        throw Exception("surface is null");
     }
     castedObject.sdlDstRect = {*castedObject.posX * gameSizeUnit, *castedObject.posY * gameSizeUnit, castedObject.sizeW * gameSizeUnit, castedObject.sizeH * gameSizeUnit};
     if (castedObject.isAnimated)

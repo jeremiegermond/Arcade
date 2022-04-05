@@ -10,7 +10,42 @@
 
 namespace arcade {
 
+constexpr std::array<std::string_view, 3> GRAPHIC_LIB_PATHS = {
+    "./lib/arcade_sdl2.so",
+    "./lib/arcade_sfml.so",
+    "./lib/arcade_ncurses.so"
+};
+
 Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
+    this->pacmanLib.open("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
+    this->pacman.reset(this->pacmanLib.create_game());
+}
+
+void Arcade::run(const std::string &libName) {
+    auto itr = std::find(GRAPHIC_LIB_PATHS.begin(), GRAPHIC_LIB_PATHS.end(), std::string_view(libName.c_str()));
+
+    if (itr == GRAPHIC_LIB_PATHS.end()) {
+        throw Exception(libName + " is not a graphic lib.");
+    }
+    this->graphicIndex = itr - GRAPHIC_LIB_PATHS.begin();
+
+    getNextLibrary();
+    currentGame = pacman;
+    currentGame->setGameObjects();
+    this->currentGraphic->createWindow();
+    this->currentGraphic->loadObjects(currentGame->getGameObjects());
+    running = true;
+    while (running) {
+        input = currentGraphic->loop();
+        handleKeyEvents();
+        currentGame->setKeyEvent(input);
+        pacman->updateGameObjects();
+        switchLib();
+    }
+    currentGraphic->closeWindow();
+}
+
+void Arcade::getNextLibrary() {
     GraphicLibrary::Parameters parameters {
         .window = {
             .title = "Arcade",
@@ -22,80 +57,26 @@ Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
             .height = 22
         }
     };
-    lib_sdl2 = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL));
-    sdl2.reset(lib_sdl2->create(parameters));
-
-    lib_ncurses = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL));
-    ncurses.reset(lib_ncurses->create(parameters));
-
-    game_lib = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL));
-    pacman.reset(game_lib->create_game());
+    std::string path = GRAPHIC_LIB_PATHS[this->graphicIndex].data();
+    this->currentGraphic.reset(nullptr);
+    this->currentGraphicLib.open(path, RTLD_LAZY | RTLD_LOCAL);
+    this->currentGraphic.reset(this->currentGraphicLib.create(parameters));
+    this->graphicIndex = (this->graphicIndex + 1) % GRAPHIC_LIB_PATHS.size();
 }
 
-Arcade::~Arcade() {
-    pacman.reset();
-    ncurses.reset();
-    sdl2.reset();
-    currentGraphic.reset();
-    currentGame.reset();
+void Arcade::handleKeyEvents() {
+    if (input == KeyEvent::q)
+        running = false;
 }
 
-
-    void Arcade::run(const std::string& libName) {
-        setCurrentGraphicLib(libName);
-        currentGame = pacman; // To edit later
-        currentGame->setGameObjects();
+void Arcade::switchLib() {
+    if (input == KeyEvent::d || input == KeyEvent::s) {
+        currentGraphic->closeWindow();
+        getNextLibrary();
         currentGraphic->createWindow();
         currentGraphic->loadObjects(currentGame->getGameObjects());
-        running = true;
-        while (running) {
-            input = currentGraphic->loop();
-            handleKeyEvents();
-            currentGame->setKeyEvent(input);
-            pacman->updateGameObjects();
-            switchLib();
-        }
-        currentGraphic->closeWindow();
+        input = KeyEvent::NONE;
     }
-
-void Arcade::setCurrentGraphicLib(const std::string &libName) {
-    if (libName == "./lib/arcade_sdl2.so")
-        currentGraphic = sdl2;
-    else if (libName == "./lib/arcade_ncurses.so")
-        currentGraphic = ncurses;
-    else
-        throw arcade::Exception("invalid lib path");
 }
-
-    void Arcade::handleKeyEvents() {
-        if (input == KeyEvent::q)
-            running = false;
-    }
-
-    void Arcade::switchLib() {
-        std::shared_ptr<IGraphicLibrary> lib_to_switch;
-
-        if (input == KeyEvent::d) {
-            if (currentGraphic->getName() == "ncurses") {
-                lib_to_switch = sdl2;
-            } else if (currentGraphic->getName() == "sdl2") {
-                lib_to_switch = ncurses;
-            }
-        } else if (input == KeyEvent::s) {
-            if (currentGraphic->getName() == "sdl2") {
-                lib_to_switch = ncurses;
-            } else if (currentGraphic->getName() == "ncurses") {
-                lib_to_switch = sdl2;
-            }
-        }
-
-        if (input == KeyEvent::d || input == KeyEvent::s) {
-            currentGraphic->closeWindow();
-            currentGraphic = lib_to_switch;
-            currentGraphic->createWindow();
-            currentGraphic->loadObjects(currentGame->getGameObjects());
-            input = KeyEvent::NONE;
-        }
-    }
 
 }

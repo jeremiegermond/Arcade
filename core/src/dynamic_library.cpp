@@ -10,8 +10,10 @@
 
 namespace arcade {
 
-DynamicLibrary::DynamicLibrary(const std::string &library, int flags) :
-    handle(dlopen(library.c_str(), flags), [] (void *handle) { dlclose(handle); }) {
+DynamicLibrary::DynamicLibrary() : handle(nullptr, [] (void *handle) { dlclose(handle); }) {}
+
+void DynamicLibrary::open(const std::string &library, int flags) {
+    this->handle.reset(dlopen(library.c_str(), flags));
 
     if (!handle) {
         throw Exception("Cannot open file " + std::string(dlerror()));

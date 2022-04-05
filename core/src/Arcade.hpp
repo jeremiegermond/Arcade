@@ -14,28 +14,31 @@
 #include "IGameLibrary.hpp"
 #include "dynamic_library.hpp"
 #include "graphic_library.hpp"
+#include <cassert>
+#include <array>
+#include <algorithm>
 
 namespace arcade {
 
 class Arcade {
     public:
         Arcade();
-        ~Arcade();
+
         void run(const std::string &libName);
         void switchLib();
     private:
-        std::shared_ptr<IGraphicLibrary> sdl2;
-        std::shared_ptr<IGraphicLibrary> ncurses;
-        std::shared_ptr<IGraphicLibrary> currentGraphic;
-        std::shared_ptr<IGameLibrary> pacman;
+        std::unique_ptr<IGraphicLibrary> currentGraphic;
+        DynamicLibrary currentGraphicLib;
+        size_t graphicIndex = 0;
+
         std::shared_ptr<IGameLibrary> currentGame;
-        std::unique_ptr<DynamicLibrary> lib_sdl2;
-        std::unique_ptr<DynamicLibrary> lib_ncurses;
-        std::unique_ptr<DynamicLibrary> game_lib;
+        DynamicLibrary pacmanLib;
+        std::shared_ptr<IGameLibrary> pacman;
+
         KeyEvent input;
         bool running;
 
-        void setCurrentGraphicLib(const std::string &libName);
+        void getNextLibrary();
         void handleKeyEvents();
 };
 

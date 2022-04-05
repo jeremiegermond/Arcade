@@ -17,7 +17,7 @@
 
 namespace arcade {
 
-struct sdlObject : public arcade::object {
+struct sdlObject : public object {
     SDL_FRect sdlDstRect{};
     SDL_Rect sdlSrcRect{};
     SDL_Texture *sdlTexture{};

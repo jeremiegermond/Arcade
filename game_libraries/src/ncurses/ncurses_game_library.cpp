@@ -36,7 +36,7 @@ void NCursesGraphicLibrary::createWindow() {
     );
 
     if (!this->window) {
-        throw Exception("Cannot create _window.");
+        throw Exception("Cannot create window.");
     }
     wrefresh(this->window);
     curs_set(0);

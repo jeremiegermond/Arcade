@@ -15,10 +15,15 @@
 #include <memory>
 
 int main(int argc, char **argv) {
-    arcade::Arcade game;
+    try {
+        arcade::Arcade game;
 
-    std::srand(std::time(nullptr));
-    if (argc == 2) {
-        game.run(argv[1]);
+        std::srand(std::time(nullptr));
+        if (argc == 2) {
+            game.run(argv[1]);
+        }
+    } catch(std::exception &e) {
+        std::cout << "Arcade terminated with an exception:\n" << e.what() << std::endl;
     }
+    
 }
