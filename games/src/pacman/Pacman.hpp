@@ -78,7 +78,7 @@ class Pacman : public GameLibrary {
 
     public:
         Pacman();
-        ~Pacman() = default;
+        ~Pacman();
 };
 
 }

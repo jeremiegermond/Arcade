@@ -16,7 +16,7 @@ constexpr std::array<std::string_view, 3> GRAPHIC_LIB_PATHS = {
     "./lib/arcade_ncurses.so"
 };
 
-Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
+Arcade::Arcade() : input(KeyEvent::NONE), running(false), scoreBoard() {
     this->pacmanLib.open("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
     this->pacman.reset(this->pacmanLib.create_game());
 }

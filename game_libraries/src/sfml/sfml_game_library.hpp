@@ -29,7 +29,7 @@ class SFMLGraphicLibrary : public GraphicLibrary {
 
         void createWindow() override;
         void closeWindow() override;
-        void loadObjects(std::vector<object> gameObjects) override;
+        void loadObjects(std::vector<object> gameObjects) override {};
         KeyEvent loop() override;
 };
 

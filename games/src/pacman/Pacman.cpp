@@ -364,6 +364,7 @@ void Pacman::handlePacgumColision() {
         if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY) && *i.state == State::ALIVE) {
             pacgumsNumber--;
             score += 100;
+            lastScore = score;
             *i.state = State::NONE;
         }
     }
@@ -372,6 +373,7 @@ void Pacman::handlePacgumColision() {
         if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY) && *i.state == State::ALIVE) {
             pacgumsNumber--;
             score += 1000;
+            lastScore = score;
             *i.state = State::NONE;
             chrono_invicibility = NOW;
             invicible = true;
@@ -419,7 +421,9 @@ void Pacman::handlePhantomColision() {
             if (invicible) {
                 handlePacmanEatPhantom(a);
             } else {
+                lastScore = score;
                 score = 0;
+                gameEnded = true;
                 gameEnd();
             }
         }
@@ -521,6 +525,7 @@ void Pacman::handleDeadPhantom(object &i) {
 }
 
 void Pacman::updateScore() {
+    gameEnded = false;
     *scoreText.text = "Score : " + std::to_string(score);
 }
 
@@ -547,7 +552,10 @@ void Pacman::handleWin() {
     }
 }
 
-extern "C" IGameLibrary* create_game() {
+Pacman::~Pacman() {
+}
+
+    extern "C" IGameLibrary* create_game() {
     return new Pacman();
 }
 

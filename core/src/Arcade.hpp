@@ -9,14 +9,14 @@
 #define ARCADE_ARCADE_HPP
 
 #include <string>
-#include <memory>
+#include "dynamic_library.hpp"
 #include "IGraphicLibrary.hpp"
 #include "IGameLibrary.hpp"
-#include "dynamic_library.hpp"
 #include "graphic_library.hpp"
 #include <cassert>
 #include <array>
 #include <algorithm>
+#include "Score.hpp"
 
 namespace arcade {
 
@@ -37,6 +37,8 @@ class Arcade {
 
         KeyEvent input;
         bool running;
+        Score scoreBoard;
+        std::string username;
 
         void getNextLibrary();
         void handleKeyEvents();

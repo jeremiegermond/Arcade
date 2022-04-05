@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set (CMAKE_CXX_FLAGS "-std=c++17 -g3 -Wall -O0")
 
-
 include_directories(include)
 
 add_executable(arcade core/src/Arcade.cpp core/src/Arcade.hpp)
@@ -54,4 +53,14 @@ add_custom_command(
         TARGET arcade
         POST_BUILD COMMAND ${CMAKE_COMMAND}
         -E create_symlink ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+)
+add_custom_command(
+        TARGET arcade
+        POST_BUILD COMMAND ${CMAKE_COMMAND}
+        -E create_symlink ${CMAKE_BINARY_DIR}/lib ${CMAKE_SOURCE_DIR}/lib
+)
+add_custom_command(
+        TARGET arcade
+        POST_BUILD COMMAND ${CMAKE_COMMAND}
+        -E create_symlink ${CMAKE_BINARY_DIR}/arcade ${CMAKE_SOURCE_DIR}/arcade
 )

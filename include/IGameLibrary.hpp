@@ -19,6 +19,8 @@ class IGameLibrary {
         virtual std::vector<object> getGameObjects() = 0;
         virtual void updateGameObjects() = 0;
         virtual void setKeyEvent(KeyEvent event) = 0;
+        virtual int getLastScore() = 0;
+        virtual bool hasGameEnded() = 0;
 };
 
 extern "C" IGameLibrary *create_game();

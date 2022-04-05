@@ -19,6 +19,8 @@ namespace arcade
         void readMap();
         void initWall(int posX, int posY, int index);
         void initApples(int posX, int posY);
+        void updateScore();
+        bool handleBeginOrEnd();
 
         std::vector<std::string> map;
         object nibbler;
@@ -29,7 +31,7 @@ namespace arcade
     
     public:
         Nibbler();
-        ~Nibbler() = default;
+        ~Nibbler();
 };
 
 }

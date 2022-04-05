@@ -11,8 +11,6 @@
 #include <string>
 #include "object.hpp"
 #include <vector>
-#include <memory>
-
 namespace arcade {
 
 enum class KeyEvent {
