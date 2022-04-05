@@ -31,9 +31,10 @@ void SFMLGraphicLibrary::createWindow() {
 
 KeyEvent SFMLGraphicLibrary::loop() {
     this->window.clear();
+    this->window.draw(sf::CircleShape(50));
     this->window.display();
 
-    return KeyEvent::NONE;
+    return handleInputs();
 }
 
 KeyEvent SFMLGraphicLibrary::handleInputs() {
@@ -41,10 +42,12 @@ KeyEvent SFMLGraphicLibrary::handleInputs() {
     KeyEvent input = KeyEvent::NONE;
 
     while (this->window.pollEvent(event)){
-        if (event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed) {
             closeWindow();
+            std::exit(0);
+        }
 
-        if (event.type == sf::Event::KeyPressed){
+        if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
                 input = KeyEvent::ESCAPE;
                 break; 
@@ -63,6 +66,14 @@ KeyEvent SFMLGraphicLibrary::handleInputs() {
             }
             if (event.key.code == sf::Keyboard::Right) {
                 input = KeyEvent::RIGHT;
+                break; 
+            }
+            if (event.key.code == sf::Keyboard::D) {
+                input = KeyEvent::d;
+                break; 
+            }
+            if (event.key.code == sf::Keyboard::S) {
+                input = KeyEvent::s;
                 break; 
             }
         }
