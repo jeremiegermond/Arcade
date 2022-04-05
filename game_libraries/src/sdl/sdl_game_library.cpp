@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters), window(nullptr), gameSizeUnit(45), refreshTimeUnit(150) {
+SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters, "ncurses"), window(nullptr), gameSizeUnit(45), refreshTimeUnit(150) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw Exception("Cannot initialize SDL: " + std::string(SDL_GetError()));
     }
@@ -23,7 +23,6 @@ SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibr
 }
 
 SDLGraphicLibrary::~SDLGraphicLibrary() {
-    closeWindow();
 }
 
 void SDLGraphicLibrary::closeWindow()
@@ -58,10 +57,6 @@ void SDLGraphicLibrary::createWindow() {
         SDL_RENDERER_ACCELERATED
     );
     started = true;
-}
-
-std::string SDLGraphicLibrary::getName() const {
-    return "SDL2";
 }
 
 void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {

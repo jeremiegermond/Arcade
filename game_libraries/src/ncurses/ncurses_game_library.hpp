@@ -14,6 +14,9 @@
 #include "exception.hpp"
 #include <vector>
 #include <memory>
+#include <chrono>
+
+#define NOW std::chrono::high_resolution_clock::now()
 
 namespace arcade {
 
@@ -22,8 +25,10 @@ class NCursesGraphicLibrary : public GraphicLibrary {
         WINDOW *window;
         std::vector<object> textObjects;
         std::vector<object> entityObjects;
+        std::chrono::high_resolution_clock::time_point chrono;
+        std::chrono::duration<long, std::ratio<1, 1000>>::rep timeUpdate;
 
-        void initTextObjects(object &gameObject);
+    void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);
         void drawEntityObject() override;
         void drawTextObject() override;
@@ -33,10 +38,10 @@ class NCursesGraphicLibrary : public GraphicLibrary {
         ~NCursesGraphicLibrary() = default;
         
         void createWindow() override;
-        std::string getName() const override;
         void closeWindow() override;
         void loadObjects(std::vector<object> gameObjects) override;
         KeyEvent loop() override;
+        bool timeRefresh();
 };
 
 extern "C" GraphicLibrary *create(const GraphicLibrary::Parameters &parameters);

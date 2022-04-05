@@ -53,7 +53,6 @@ class SDLGraphicLibrary : public GraphicLibrary {
         ~SDLGraphicLibrary() override;
 
         void createWindow() override;
-        std::string getName() const override;
         void closeWindow() override;
         void loadObjects(std::vector<object> gameObjects) override;
         KeyEvent loop() override;

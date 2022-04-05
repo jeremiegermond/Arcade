@@ -18,12 +18,14 @@ namespace arcade {
 class GraphicLibrary : public IGraphicLibrary {
     protected:
         Parameters parameters;
+        std::string name;
 
         virtual void drawEntityObject() {};
         virtual void drawTextObject() {};
     public:
-        GraphicLibrary(const Parameters &parameters) : parameters(parameters) {}
+        GraphicLibrary(const Parameters &parameters, std::string name) : parameters(parameters), name(name) {}
         ~GraphicLibrary() = default;
+        std::string getName() const override { return name; };
 };
 
 }

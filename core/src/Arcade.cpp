@@ -7,6 +7,7 @@
 
 #include "Arcade.hpp"
 #include "exception.hpp"
+#include <thread>
 
 namespace arcade {
 
@@ -57,7 +58,9 @@ namespace arcade {
             handleKeyEvents();
             currentGame->setKeyEvent(input);
             pacman->updateGameObjects();
+            switchLib();
         }
+        currentGraphic->closeWindow();
     }
 
     void Arcade::setCurrentGraphicLib(const std::string &libName) {
@@ -70,8 +73,25 @@ namespace arcade {
     }
 
     void Arcade::handleKeyEvents() {
-        if (input == KeyEvent::ESCAPE)
+        if (input == KeyEvent::q)
             running = false;
+    }
+
+    void Arcade::switchLib() {
+        std::shared_ptr<IGraphicLibrary> lib_to_switch;
+
+        if (input == KeyEvent::d) {
+            if (currentGraphic->getName() == "ncurses") {
+                lib_to_switch = sdl2;
+            } else if (currentGraphic->getName() == "sdl2") {
+                lib_to_switch = ncurses;
+            }
+            currentGraphic->closeWindow();
+            currentGraphic = lib_to_switch;
+            currentGraphic->createWindow();
+            currentGraphic->loadObjects(currentGame->getGameObjects());
+            input = KeyEvent::NONE;
+        }
     }
 
 }

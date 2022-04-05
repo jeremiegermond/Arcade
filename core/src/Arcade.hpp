@@ -22,6 +22,7 @@ namespace arcade {
             Arcade();
             ~Arcade();
             void run(const std::string& libName);
+            void switchLib();
 
         protected:
 

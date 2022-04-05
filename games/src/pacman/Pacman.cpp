@@ -34,13 +34,13 @@ void Pacman::setGameObjects()
 {
     score = 0;
     *gameText.text = "Pacman";
-    *gameText.posX = 0;
+    *gameText.posX = 30;
     *gameText.posY = 0;
     gameText.sizeW = 7;
     gameText.sizeH = 1;
     gameText.type = Type::TEXT;
     *scoreText.text = "Score : 0";
-    *scoreText.posX = 0;
+    *scoreText.posX = 30;
     *scoreText.posY = 4;
     scoreText.sizeW = 3;
     scoreText.sizeH = 1;
@@ -199,7 +199,7 @@ void Pacman::setGameObjects()
         *newPacgums.state = State::ALIVE;
 
         pacgums.push_back(newPacgums);
-        gameObjects.push_back(pacgums.back());
+        gameObjects.insert(gameObjects.begin(), pacgums.back());
     }
 
     void Pacman::initBigPacgums(int posX, int posY) {
@@ -225,7 +225,7 @@ void Pacman::setGameObjects()
         *newBigPacgums.state = State::ALIVE;
 
         bigPacgums.push_back(newBigPacgums);
-        gameObjects.push_back(bigPacgums.back());
+        gameObjects.insert(gameObjects.begin() ,bigPacgums.back());
     }
 
     void Pacman::initTeleporters(int posX, int posY) {
