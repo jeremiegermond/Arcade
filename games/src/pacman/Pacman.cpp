@@ -547,7 +547,10 @@ void Pacman::handleWin() {
     }
 }
 
-extern "C" IGameLibrary* create_game() {
+Pacman::~Pacman() {
+}
+
+    extern "C" IGameLibrary* create_game() {
     return new Pacman();
 }
 

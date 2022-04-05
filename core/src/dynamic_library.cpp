@@ -26,7 +26,7 @@ IGraphicLibrary * DynamicLibrary::create(const IGraphicLibrary::Parameters &para
     }
 
     IGraphicLibrary * (* create) (const IGraphicLibrary::Parameters &) = (IGraphicLibrary * (*) (const IGraphicLibrary::Parameters &)) fptr;
-    
+
     return create(parameters);
 }
 
@@ -38,7 +38,7 @@ IGameLibrary * DynamicLibrary::create_game() {
     }
 
     IGameLibrary * (* create_game) () = (IGameLibrary * (*) ()) fptr;
-    
+
     return create_game();
 }
 

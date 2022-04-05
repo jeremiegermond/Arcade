@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
+Arcade::Arcade() : input(KeyEvent::NONE), running(false), scoreBoard() {
     GraphicLibrary::Parameters parameters {
         .window = {
             .title = "Arcade",
@@ -22,22 +22,24 @@ Arcade::Arcade() : input(KeyEvent::NONE), running(false) {
             .height = 22
         }
     };
-    lib_sdl2 = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL));
-    sdl2.reset(lib_sdl2->create(parameters));
+    lib_sdl2 = new DynamicLibrary("./lib/arcade_sdl2.so", RTLD_LAZY | RTLD_LOCAL);
+    sdl2 = lib_sdl2->create(parameters);
 
-    lib_ncurses = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL));
-    ncurses.reset(lib_ncurses->create(parameters));
+    lib_ncurses = new DynamicLibrary("./lib/arcade_ncurses.so", RTLD_LAZY | RTLD_LOCAL);
+    ncurses = lib_ncurses->create(parameters);
 
-    game_lib = std::make_unique<DynamicLibrary>(DynamicLibrary("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL));
-    pacman.reset(game_lib->create_game());
+    lib_pacman = new DynamicLibrary("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
+    pacman = lib_pacman->create_game();
 }
 
 Arcade::~Arcade() {
-    pacman.reset();
-    ncurses.reset();
-    sdl2.reset();
-    currentGraphic.reset();
-    currentGame.reset();
+
+    delete pacman;
+    delete ncurses;
+    delete sdl2;
+    delete lib_sdl2;
+    delete lib_ncurses;
+    delete lib_pacman;
 }
 
 
@@ -64,7 +66,7 @@ void Arcade::setCurrentGraphicLib(const std::string &libName) {
     else if (libName == "./lib/arcade_ncurses.so")
         currentGraphic = ncurses;
     else
-        throw arcade::Exception("invalid lib path");
+        throw arcade::Exception("invalid lib path or lib not compatible");
 }
 
     void Arcade::handleKeyEvents() {
@@ -73,7 +75,7 @@ void Arcade::setCurrentGraphicLib(const std::string &libName) {
     }
 
     void Arcade::switchLib() {
-        std::shared_ptr<IGraphicLibrary> lib_to_switch;
+        IGraphicLibrary *lib_to_switch;
 
         if (input == KeyEvent::d) {
             if (currentGraphic->getName() == "ncurses") {

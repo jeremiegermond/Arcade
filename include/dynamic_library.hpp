@@ -16,12 +16,12 @@
 namespace arcade {
 
 class DynamicLibrary {
-    private:
-        std::unique_ptr<void, void (*) (void *)> handle;
     public:
         DynamicLibrary(const std::string &library, int flags);
         IGraphicLibrary *create(const IGraphicLibrary::Parameters &parameters);
         IGameLibrary *create_game();
+    private:
+        std::unique_ptr<void, void (*) (void *)> handle;
 };
 
 }

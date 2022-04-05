@@ -9,11 +9,11 @@
 #define ARCADE_ARCADE_HPP
 
 #include <string>
-#include <memory>
+#include "dynamic_library.hpp"
 #include "IGraphicLibrary.hpp"
 #include "IGameLibrary.hpp"
-#include "dynamic_library.hpp"
 #include "graphic_library.hpp"
+#include "Score.hpp"
 
 namespace arcade {
 
@@ -24,16 +24,17 @@ class Arcade {
         void run(const std::string &libName);
         void switchLib();
     private:
-        std::shared_ptr<IGraphicLibrary> sdl2;
-        std::shared_ptr<IGraphicLibrary> ncurses;
-        std::shared_ptr<IGraphicLibrary> currentGraphic;
-        std::shared_ptr<IGameLibrary> pacman;
-        std::shared_ptr<IGameLibrary> currentGame;
-        std::unique_ptr<DynamicLibrary> lib_sdl2;
-        std::unique_ptr<DynamicLibrary> lib_ncurses;
-        std::unique_ptr<DynamicLibrary> game_lib;
+        IGraphicLibrary *sdl2;
+        IGraphicLibrary *ncurses;
+        IGraphicLibrary *currentGraphic{};
+        IGameLibrary *pacman;
+        IGameLibrary *currentGame{};
+        DynamicLibrary *lib_sdl2;
+        DynamicLibrary *lib_ncurses;
+        DynamicLibrary *lib_pacman;
         KeyEvent input;
         bool running;
+        Score scoreBoard;
 
         void setCurrentGraphicLib(const std::string &libName);
         void handleKeyEvents();

@@ -24,6 +24,14 @@ SDLGraphicLibrary::SDLGraphicLibrary(const Parameters &parameters) : GraphicLibr
 }
 
 SDLGraphicLibrary::~SDLGraphicLibrary() {
+    for (auto &i : entityObjects) {
+        SDL_DestroyTexture(i.sdlTexture);
+        SDL_FreeSurface(i.sdlSurface);
+    }
+    for (auto &i : textObjects) {
+        SDL_DestroyTexture(i.sdlTexture);
+        SDL_FreeSurface(i.sdlSurface);
+    }
 }
 
 void SDLGraphicLibrary::closeWindow()
