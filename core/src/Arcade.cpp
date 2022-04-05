@@ -81,6 +81,15 @@ void Arcade::setCurrentGraphicLib(const std::string &libName) {
             } else if (currentGraphic->getName() == "sdl2") {
                 lib_to_switch = ncurses;
             }
+        } else if (input == KeyEvent::s) {
+            if (currentGraphic->getName() == "sdl2") {
+                lib_to_switch = ncurses;
+            } else if (currentGraphic->getName() == "ncurses") {
+                lib_to_switch = sdl2;
+            }
+        }
+
+        if (input == KeyEvent::d || input == KeyEvent::s) {
             currentGraphic->closeWindow();
             currentGraphic = lib_to_switch;
             currentGraphic->createWindow();
