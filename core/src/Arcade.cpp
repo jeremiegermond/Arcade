@@ -29,7 +29,7 @@ void Arcade::run(const std::string &libName) {
     }
     this->graphicIndex = itr - GRAPHIC_LIB_PATHS.begin();
 
-    getNextLibrary();
+    getCurrentLibrary();
     currentGame = pacman;
     currentGame->setGameObjects();
     this->currentGraphic->createWindow();
@@ -46,6 +46,16 @@ void Arcade::run(const std::string &libName) {
 }
 
 void Arcade::getNextLibrary() {
+    this->graphicIndex = (this->graphicIndex + 1) % GRAPHIC_LIB_PATHS.size();
+    getCurrentLibrary();
+}
+
+void Arcade::getPrevLibrary() {
+   this->graphicIndex = this->graphicIndex == 0 ? GRAPHIC_LIB_PATHS.size() - 1 : this->graphicIndex - 1;
+   getCurrentLibrary();
+}
+
+void Arcade::getCurrentLibrary() {
     GraphicLibrary::Parameters parameters {
         .window = {
             .title = "Arcade",
@@ -61,7 +71,6 @@ void Arcade::getNextLibrary() {
     this->currentGraphic.reset(nullptr);
     this->currentGraphicLib.open(path, RTLD_LAZY | RTLD_LOCAL);
     this->currentGraphic.reset(this->currentGraphicLib.create(parameters));
-    this->graphicIndex = (this->graphicIndex + 1) % GRAPHIC_LIB_PATHS.size();
 }
 
 void Arcade::handleKeyEvents() {
@@ -72,7 +81,11 @@ void Arcade::handleKeyEvents() {
 void Arcade::switchLib() {
     if (input == KeyEvent::d || input == KeyEvent::s) {
         currentGraphic->closeWindow();
-        getNextLibrary();
+        if (input == KeyEvent::s) {
+            getPrevLibrary();
+        } else {
+            getNextLibrary();
+        }
         currentGraphic->createWindow();
         currentGraphic->loadObjects(currentGame->getGameObjects());
         input = KeyEvent::NONE;

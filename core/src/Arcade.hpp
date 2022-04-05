@@ -41,6 +41,8 @@ class Arcade {
         std::string username;
 
         void getNextLibrary();
+        void getPrevLibrary();
+        void getCurrentLibrary();
         void handleKeyEvents();
 };
 
