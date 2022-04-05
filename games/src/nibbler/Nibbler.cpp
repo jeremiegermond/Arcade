@@ -39,7 +39,10 @@ Nibbler::Nibbler() : GameLibrary()
                 } else if (i == 'A') {
                     applesNumber++;
                     initApples(posX, posY);
-                } else if (i == 'N') {
+                } else if (i == 'N') { // Tête du Snake doit être différente du corps
+                    initNibbler(posX, posY);
+                    index++;
+                } else if (i == 'C') { // Coprs du Snake + le snake doit être de 4 au début (3 corps + 1 tête dcp)
                     initNibbler(posX, posY);
                     index++;
                 }
