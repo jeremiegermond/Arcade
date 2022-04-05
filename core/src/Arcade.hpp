@@ -35,6 +35,7 @@ class Arcade {
         KeyEvent input;
         bool running;
         Score scoreBoard;
+        std::string username;
 
         void setCurrentGraphicLib(const std::string &libName);
         void handleKeyEvents();

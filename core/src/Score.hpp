@@ -12,20 +12,22 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <map>
+#include <vector>
 
 namespace arcade {
-    class Score {
-        public:
-            Score();
-            ~Score();
+class Score {
+    public:
+        Score();
+        ~Score();
 
-        protected:
-        private:
-            std::map<std::string, int> scoreMap;
+        void addToScoreboard(const std::string& user, int score);
+        [[nodiscard]] std::vector<std::pair<std::string, int>> getScoreBoard() const;
+    protected:
+    private:
+        std::vector<std::pair<std::string, int>> scoreMap;
 
-        void addToScoreboard(std::string user, int score);
-    };
+        void writeScoreboard();
+};
 }
 
 #endif //ARCADE_SCORE_HPP

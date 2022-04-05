@@ -20,8 +20,10 @@ class GameLibrary : public IGameLibrary {
         std::vector<object> gameObjects;
         object gameText;
         object scoreText;
-        int score;
+        int score{};
+        int lastScore;
         KeyEvent event;
+        bool gameEnded{};
         void updateGameObjects() override {}
     public:
         GameLibrary() = default;
@@ -29,6 +31,8 @@ class GameLibrary : public IGameLibrary {
         std::vector<object> getGameObjects() override { return this->gameObjects; }
         void setGameObjects() override {}
         void setKeyEvent(KeyEvent e) override { event = e; }
+        int getLastScore() override { return lastScore; };
+        bool hasGameEnded() override { return gameEnded; };
 
 };
 

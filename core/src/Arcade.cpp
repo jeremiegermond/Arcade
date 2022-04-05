@@ -44,6 +44,8 @@ Arcade::~Arcade() {
 
 
     void Arcade::run(const std::string& libName) {
+        username = "shrek";
+
         setCurrentGraphicLib(libName);
         currentGame = pacman; // To edit later
         currentGame->setGameObjects();
@@ -56,6 +58,9 @@ Arcade::~Arcade() {
             currentGame->setKeyEvent(input);
             pacman->updateGameObjects();
             switchLib();
+            if (currentGame->hasGameEnded() || !running) {
+                scoreBoard.addToScoreboard(username, currentGame->getLastScore());
+            }
         }
         currentGraphic->closeWindow();
     }
