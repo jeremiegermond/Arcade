@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <map>
+#include <vector>
 
 namespace arcade {
     class Score {
@@ -20,11 +20,13 @@ namespace arcade {
             Score();
             ~Score();
 
+            void addToScoreboard(const std::string& user, int score);
+            [[nodiscard]] std::vector<std::pair<std::string, int>> getScoreBoard() const;
         protected:
         private:
-            std::map<std::string, int> scoreMap;
+            std::vector<std::pair<std::string, int>> scoreMap;
 
-        void addToScoreboard(std::string user, int score);
+            void writeScoreboard();
     };
 }
 
