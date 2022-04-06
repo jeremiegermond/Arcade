@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-SFMLGraphicLibrary::SFMLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters, "sfml") {}
+SFMLGraphicLibrary::SFMLGraphicLibrary(const Parameters &parameters) : GraphicLibrary(parameters, "sfml"), sizeUnit(40) {}
 
 SFMLGraphicLibrary::~SFMLGraphicLibrary() {
     closeWindow();
@@ -39,6 +39,8 @@ KeyEvent SFMLGraphicLibrary::loop() {
 }
 
 void SFMLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
+    entityObjects.clear();
+    textObjects.clear();
     for (auto &object : gameObjects) {
         switch (object.type) {
             case Type::TEXT:
@@ -52,11 +54,16 @@ void SFMLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
 }
 
 void SFMLGraphicLibrary::initTextObjects(object &gameObject) {
-    textObjects.push_back(gameObject);
+    sfmlObject castedObject(gameObject);
+
+    textObjects.push_back(castedObject);
 }
 
 void SFMLGraphicLibrary::initEntityObjects(object &gameObject) {
-	entityObjects.push_back(gameObject);
+    sfmlObject castedObject(gameObject);
+
+    castedObject.rectangle = sf::RectangleShape(sf::Vector2f(sizeUnit, sizeUnit));
+    entityObjects.push_back(castedObject);
 }
 
 void SFMLGraphicLibrary::drawTextObject() {
@@ -64,41 +71,62 @@ void SFMLGraphicLibrary::drawTextObject() {
 
     for (auto &i : textObjects) {
         sf::Text text(i.text->c_str(), font);
-        text.setPosition(*i.posY * 20, *i.posX * 20);
+        text.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
         text.setCharacterSize(24);
 	    this->window.draw(text);
     }
 }
 
 void SFMLGraphicLibrary::drawEntityObject() {
-    sf::RectangleShape rectangle(sf::Vector2f(50, 50));
-
-    this->window.draw(rectangle);
     for (auto &i: entityObjects) {
             if (*i.state == State::NONE)
                 continue;
             switch (i.chr) {
                 case 'X':
-                    rectangle.setFillColor(sf::Color(0, 0, 255, 255));
-                    this->window.draw(rectangle);
-                    break;
-                case 'O':
-                    break;
-                case 'P':
-                    break;
-                case 'M':
-                    break;
-                case 'U':
-                    break;
-                case 'L':
-                    break;
-                case '.':
-                    if (*i.state != State::ALIVE)
-                        break;
+                    i.rectangle.setFillColor(sf::Color(0, 0, 255, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
                     break;
                 case 'C':
-                    if (*i.state != State::ALIVE)
-                        break;
+                    i.rectangle.setFillColor(sf::Color(0, 255, 0, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'N':
+                    i.rectangle.setFillColor(sf::Color(0, 255, 0, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'O':
+                    i.rectangle.setFillColor(sf::Color(255, 255, 0, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'P':
+                    i.rectangle.setFillColor(sf::Color(255, 0, 0, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'M':
+                    i.rectangle.setFillColor(sf::Color(255, 0, 255, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'U':
+                    i.rectangle.setFillColor(sf::Color(0, 255, 255, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case 'L':
+                    i.rectangle.setFillColor(sf::Color(255, 255, 255, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit, *i.posY * sizeUnit);
+                    this->window.draw(i.rectangle);
+                    break;
+                case '.':
+                    i.rectangle.setSize(sf::Vector2f(10, 10));
+                    i.rectangle.setFillColor(sf::Color(255, 255, 255, *i.alpha));
+                    i.rectangle.setPosition(*i.posX * sizeUnit + 15, *i.posY * sizeUnit + 15);
+                    this->window.draw(i.rectangle);
                     break;
                 default:
                     break;

@@ -18,10 +18,10 @@
 
 namespace arcade {
 
-struct sdlObject : public object {
+struct sfmlObject : public object {
     sf::RectangleShape rectangle{};
 
-    sdlObject(const object &obj) : object(obj) {}
+    sfmlObject(const object &obj) : object(obj) {}
 };
 
 
@@ -32,9 +32,10 @@ class SFMLGraphicLibrary : public GraphicLibrary {
         sf::Sprite sprite;
         sf::Font font;
         sf::Text text;
+        int sizeUnit;
 
-        std::vector<object> textObjects;
-        std::vector<object> entityObjects;
+        std::vector<sfmlObject> textObjects;
+        std::vector<sfmlObject> entityObjects;
 
         void initTextObjects(object &gameObject);
         void initEntityObjects(object &gameObject);
