@@ -76,6 +76,10 @@ KeyEvent SFMLGraphicLibrary::handleInputs() {
                 input = KeyEvent::s;
                 break; 
             }
+            if (event.key.code == sf::Keyboard::Q) {
+                input = KeyEvent::q;
+                break; 
+            }
         }
     }
     return input;
