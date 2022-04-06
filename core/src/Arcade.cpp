@@ -40,6 +40,7 @@ void Arcade::run(const std::string &libName) {
     currentGame->setGameObjects();
     currentGraphic->createWindow();
     currentGraphic->loadObjects(currentGame->getGameObjects());
+    currentGame->setScoreVector(scoreBoard.getScoreBoard());
     running = true;
     while (running) {
         input = currentGraphic->loop();

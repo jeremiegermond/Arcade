@@ -40,13 +40,6 @@ namespace arcade {
         tooltipText.sizeH = 2;
         tooltipText.type = Type::TEXT;
         gameObjects.push_back(tooltipText);
-//        *highScoresText.text = "";
-//        *highScoresText.posX = 13.5;
-//        *highScoresText.posY = 5;
-//        highScoresText.sizeW = 15;
-//        highScoresText.sizeH = 2;
-//        highScoresText.type = Type::TEXT;
-//        gameObjects.push_back(highScoresText);
     }
 
     void Menu::updateGameObjects() {
@@ -75,15 +68,9 @@ namespace arcade {
         return gameSelected;
     }
 
-//    void Menu::setScoreVector(std::vector<std::pair<std::string, int>> score) {
-//        GameLibrary::setScoreVector(score);
-//    }
 
     void Menu::setScoreVector(std::vector<std::pair<std::string, int>> score) {
         scoreBoard = score;
-        for (auto &i : scoreBoard) {
-            std::cout << i.second << std::endl;
-        }
     }
 
     extern "C" IGameLibrary* create_game() {

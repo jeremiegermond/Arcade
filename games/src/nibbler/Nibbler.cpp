@@ -327,9 +327,6 @@ void Nibbler::setNibblerRotation()
 }
 
 void Nibbler::handleAppleColision() {
-    int randPosX;
-    int randPosY;
-
     for (auto &i : apples) {
         if (int (*i.posX) == int (*nibbler.posX) && int (*i.posY) == int (*nibbler.posY) && *i.state == State::ALIVE) {
             for (auto &i : nibbler_tail) {
