@@ -4,6 +4,6 @@ target_sources(
 )
 
 target_sources(
-        arcade_nibbler PUBLIC
-        src/nibbler/Nibbler.cpp
+    arcade_nibbler PUBLIC
+    src/nibbler/Nibbler.cpp
 )

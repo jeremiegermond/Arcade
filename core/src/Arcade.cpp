@@ -34,7 +34,7 @@ void Arcade::run(const std::string &libName) {
     username = "user";
 
     getCurrentLibrary();
-    currentGame = pacman;
+    currentGame = nibbler;
     currentGame->setGameObjects();
     currentGraphic->createWindow();
     currentGraphic->loadObjects(currentGame->getGameObjects());
@@ -43,12 +43,13 @@ void Arcade::run(const std::string &libName) {
         input = currentGraphic->loop();
         handleKeyEvents();
         currentGame->setKeyEvent(input);
-        pacman->updateGameObjects();
+        currentGame->updateGameObjects();
         switchLib();
         if (currentGame->hasGameEnded() || !running) {
             scoreBoard.addToScoreboard(username, currentGame->getLastScore());
         }
     }
+    currentGame.reset();
 }
 
 void Arcade::getNextLibrary() {

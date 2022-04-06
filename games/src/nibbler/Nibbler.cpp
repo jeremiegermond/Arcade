@@ -33,28 +33,28 @@ void Nibbler::setGameObjects()
     gameText.sizeW = 7;
     gameText.sizeH = 1;
     gameText.type = Type::TEXT;
-    *scoreText.text = "Score : 0";
-    *scoreText.posX = 30;
-    *scoreText.posY = 4;
-    scoreText.sizeW = 3;
-    scoreText.sizeH = 1;
-    scoreText.type = Type::TEXT;
+//    *scoreText.text = "Score : 0";
+//    *scoreText.posX = 30;
+//    *scoreText.posY = 4;
+//    scoreText.sizeW = 3;
+//    scoreText.sizeH = 1;
+//    scoreText.type = Type::TEXT;
     gameObjects.push_back(gameText);
-    gameObjects.push_back(scoreText);
-    readMap();
-    chrono = NOW;
+//    gameObjects.push_back(scoreText);
+//    readMap();
+//    chrono = NOW;
 }
 
 void Nibbler::updateGameObjects() {
-    updateScore();
-    setDirection();
-    if (handleBeginOrEnd())
-        return;
-    if (updateByTime()) {
-        handleNibblerMovement();
-        handleAppleColision();
-        handleWin();
-   }
+//    updateScore();
+//    setDirection();
+//    if (handleBeginOrEnd())
+//        return;
+//    if (updateByTime()) {
+//        handleNibblerMovement();
+//        handleAppleColision();
+//        handleWin();
+//   }
 }
 
 void Nibbler::readMap() {
@@ -67,16 +67,17 @@ void Nibbler::readMap() {
             posX++;
             if (i == 'X') {
                 initWall(posX, posY, index);
-            } else if (i == 'A') {
-                applesNumber++;
-                initApples(posX, posY);
-            } else if (i == 'N') {
-                initNibbler(posX, posY);
-                index++;
-            } else if (i == 'C') {
-                initNibbler(posX, posY);
-                index++;
             }
+//            else if (i == 'A') {
+//                applesNumber++;
+//                initApples(posX, posY);
+//            } else if (i == 'N') {
+//                initNibbler(posX, posY);
+//                index++;
+//            } else if (i == 'C') {
+//                initNibbler(posX, posY);
+//                index++;
+//            }
             posX = 0;
             posY++;
         }
