@@ -1,5 +1,6 @@
 build/
 lib/
+lib
 .vscode
 arcade
 cmake-build-debug
