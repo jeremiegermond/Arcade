@@ -24,7 +24,9 @@ enum class KeyEvent {
     z,
     q,
     s,
-    d
+    d,
+    n,
+    p
 };
 
 

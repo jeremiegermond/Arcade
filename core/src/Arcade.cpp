@@ -45,14 +45,7 @@ void Arcade::run(const std::string &libName) {
         input = currentGraphic->loop();
         if (currentGame == menu) {
             if (input == KeyEvent::UP) {
-                if (currentGame->getSelectedGame() == "pacman") {
-                    currentGame = pacman;
-                } else if (currentGame->getSelectedGame() == "nibbler") {
-                    currentGame = nibbler;
-                }
-                currentGame->setGameObjects();
-                currentGraphic->loadObjects(currentGame->getGameObjects());
-                input = KeyEvent::NONE;
+                switchGame();
                 continue;
             }
         }
@@ -63,6 +56,7 @@ void Arcade::run(const std::string &libName) {
         if (currentGame->hasGameEnded() || !running) {
             scoreBoard.addToScoreboard(username, currentGame->getLastScore());
         }
+        handleKeySwitchGame();
     }
     currentGame.reset();
 }
@@ -116,5 +110,30 @@ void Arcade::switchLib() {
         input = KeyEvent::NONE;
     }
 }
+
+    void Arcade::switchGame() {
+        if (currentGame->getSelectedGame() == "pacman" || currentGame == nibbler) {
+            currentGame = pacman;
+        } else if (currentGame->getSelectedGame() == "nibbler" || currentGame == pacman) {
+            currentGame = nibbler;
+        }
+        currentGame->setGameObjects();
+        currentGraphic->loadObjects(currentGame->getGameObjects());
+        input = KeyEvent::NONE;
+    }
+
+    void Arcade::handleKeySwitchGame() {
+        if (input == KeyEvent::p && currentGame != menu) {
+            currentGame = pacman;
+            currentGame->setGameObjects();
+            currentGraphic->loadObjects(currentGame->getGameObjects());
+            input = KeyEvent::NONE;
+        } else if (input == KeyEvent::n && currentGame != menu) {
+            currentGame = nibbler;
+            currentGame->setGameObjects();
+            currentGraphic->loadObjects(currentGame->getGameObjects());
+            input = KeyEvent::NONE;
+        }
+    }
 
 }

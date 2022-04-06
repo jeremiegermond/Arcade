@@ -119,6 +119,12 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
         case 'd':
             input = KeyEvent::d;
             break;
+        case 'n':
+            input = KeyEvent::n;
+            break;
+        case 'p':
+            input = KeyEvent::p;
+            break;
         default:
             break;
     }

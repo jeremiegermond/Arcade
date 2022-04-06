@@ -29,6 +29,9 @@ Pacman::Pacman() : GameLibrary(), pacmanSpeed(1), fantomsSpeed(1.1), initialFant
 
 void Pacman::setGameObjects()
 {
+    gameObjects.clear();
+
+    started = false;
     score = 0;
     *gameText.text = "Pacman";
     *gameText.posX = 30;
@@ -228,6 +231,8 @@ void Pacman::initTeleporters(int posX, int posY) {
     *teleporters[nbr].posX = posX;
     *teleporters[nbr].posY = posY;
     nbr++;
+    if (nbr == 2)
+        nbr = 0;
 }
 
 void Pacman::handlePacmanMovement() {

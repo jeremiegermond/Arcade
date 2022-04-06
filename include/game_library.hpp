@@ -33,7 +33,8 @@ class GameLibrary : public IGameLibrary {
         void setKeyEvent(KeyEvent e) override { event = e; }
         int getLastScore() override { return lastScore; };
         bool hasGameEnded() override { return gameEnded; };
-        std::string getSelectedGame() {};
+        std::string getSelectedGame() override { return "";};
+        void setScoreVector(std::vector<std::pair<std::string, int>>) { };
 
 };
 

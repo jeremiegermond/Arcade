@@ -48,6 +48,9 @@ class Arcade {
         void getPrevLibrary();
         void getCurrentLibrary();
         void handleKeyEvents();
+        void switchGame();
+        void handleKeySwitchGame();
+
 };
 
 }

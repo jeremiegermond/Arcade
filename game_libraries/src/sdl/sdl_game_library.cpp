@@ -213,6 +213,12 @@ KeyEvent SDLGraphicLibrary::handleInputs() {
                 case SDLK_d:
                     input = KeyEvent::d;
                     break;
+                case SDLK_n:
+                    input = KeyEvent::n;
+                    break;
+                case SDLK_p:
+                    input = KeyEvent::p;
+                    break;
             }
         }
     }

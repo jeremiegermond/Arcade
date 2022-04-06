@@ -27,8 +27,11 @@ private:
     object gameSelectedText;
     object tooltipText;
     object highScoresText;
+    std::vector<std::pair<std::string, int>> scoreBoard;
 
     void handleChangeGame();
+    void setScoreVector(std::vector<std::pair<std::string, int>> score) override;
+
 };
 }
 

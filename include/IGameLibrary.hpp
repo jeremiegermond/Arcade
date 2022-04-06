@@ -22,6 +22,7 @@ class IGameLibrary {
         virtual int getLastScore() = 0;
         virtual bool hasGameEnded() = 0;
         virtual std::string getSelectedGame() = 0;
+        virtual void setScoreVector(std::vector<std::pair<std::string, int>>) = 0;
 };
 
 extern "C" IGameLibrary *create_game();

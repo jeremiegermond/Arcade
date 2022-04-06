@@ -26,6 +26,9 @@ Nibbler::Nibbler() : GameLibrary(), nibblerSpeed(1), started(false), timeUpdate(
 
 void Nibbler::setGameObjects()
 {
+    gameObjects.clear();
+    nibbler_tail.clear();
+    started = false;
     score = 0;
     *gameText.text = "Nibbler";
     *gameText.posX = 30;
@@ -76,10 +79,6 @@ void Nibbler::readMap() {
                 initNibbler(posX, posY);
                 index++;
             }
-//            else if (i == 'C') {
-//                initNibbler(posX, posY);
-//                index++;
-//            }
         }
         posX = 0;
         posY++;
