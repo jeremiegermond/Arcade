@@ -137,6 +137,8 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
         init_pair(7, COLOR_GREEN, COLOR_GREEN);
 
         for (auto &i: entityObjects) {
+            if (*i.state == State::NONE)
+                continue;
             wmove(window, *i.posY, *i.posX);
             switch (i.chr) {
                 case 'X':

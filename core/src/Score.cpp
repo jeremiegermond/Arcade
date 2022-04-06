@@ -14,9 +14,6 @@ bool compPair(std::pair<std::string, int> a, std::pair<std::string, int> b) {
 }
 
 Score::Score() {
-    {
-        std::ofstream scoreBoard("scoreboard.txt");
-    }
     std::fstream scoreBoard("scoreboard.txt", std::ios::in | std::ios::out);
     std::stringstream tmp_line;
     std::string tmp;

@@ -10,7 +10,7 @@
 
 namespace arcade {
 
-Nibbler::Nibbler() : GameLibrary()
+Nibbler::Nibbler() : GameLibrary(), nibblerSpeed(1), started(false), timeUpdate(300)
 {
     std::ifstream mapfile("./assets/nibbler.map");
     std::stringstream ss;
@@ -33,28 +33,28 @@ void Nibbler::setGameObjects()
     gameText.sizeW = 7;
     gameText.sizeH = 1;
     gameText.type = Type::TEXT;
-//    *scoreText.text = "Score : 0";
-//    *scoreText.posX = 30;
-//    *scoreText.posY = 4;
-//    scoreText.sizeW = 3;
-//    scoreText.sizeH = 1;
-//    scoreText.type = Type::TEXT;
+    *scoreText.text = "Score : 0";
+    *scoreText.posX = 30;
+    *scoreText.posY = 4;
+    scoreText.sizeW = 3;
+    scoreText.sizeH = 1;
+    scoreText.type = Type::TEXT;
     gameObjects.push_back(gameText);
-//    gameObjects.push_back(scoreText);
-//    readMap();
-//    chrono = NOW;
+    gameObjects.push_back(scoreText);
+    readMap();
+    chrono = NOW;
 }
 
 void Nibbler::updateGameObjects() {
-//    updateScore();
-//    setDirection();
-//    if (handleBeginOrEnd())
-//        return;
-//    if (updateByTime()) {
-//        handleNibblerMovement();
-//        handleAppleColision();
-//        handleWin();
-//   }
+    updateScore();
+    setDirection();
+    if (handleBeginOrEnd())
+        return;
+    if (updateByTime()) {
+        handleNibblerMovement();
+        handleAppleColision();
+        handleWin();
+   }
 }
 
 void Nibbler::readMap() {
@@ -68,19 +68,21 @@ void Nibbler::readMap() {
             if (i == 'X') {
                 initWall(posX, posY, index);
             }
-//            else if (i == 'A') {
-//                applesNumber++;
-//                initApples(posX, posY);
-//            } else if (i == 'N') {
-//                initNibbler(posX, posY);
-//                index++;
-//            } else if (i == 'C') {
+            else if (i == 'A') {
+                applesNumber++;
+                initApples(posX, posY);
+            }
+            else if (i == 'N') {
+                initNibbler(posX, posY);
+                index++;
+            }
+//            else if (i == 'C') {
 //                initNibbler(posX, posY);
 //                index++;
 //            }
-            posX = 0;
-            posY++;
         }
+        posX = 0;
+        posY++;
         totalApples = applesNumber;
     }
 }
@@ -97,8 +99,8 @@ void Nibbler::initWall(int posX, int posY, int index)
     *newWall.animW = 0;
     *newWall.animH = 0;
     newWall.isAnimated = false;
-    *newWall.spriteW = 20;
-    *newWall.spriteH = 20;
+    *newWall.spriteW = 15;
+    *newWall.spriteH = 15;
     newWall.sizeH = 1;
     newWall.sizeW = 1;
     *newWall.rotation = 0;
@@ -112,15 +114,15 @@ void Nibbler::initWall(int posX, int posY, int index)
 
 void Nibbler::initNibbler(int posX, int posY)
 {
-    nibbler.texturePath = "./assets/nibbler.png";
-    nibbler.chr = 'O';
+    nibbler.texturePath = "./assets/nibbler_snake.png";
+    nibbler.chr = 'C';
     nibbler.maxFrame = 3;
     nibbler.type = Type::ENTITY;
     *nibbler.animX = 0;
     *nibbler.animY = 0;
-    *nibbler.animW = 20;
+    *nibbler.animW = 0;
     *nibbler.animH = 0;
-    nibbler.isAnimated = true;
+    nibbler.isAnimated = false;
     *nibbler.spriteW = 20;
     *nibbler.spriteH = 20;
     nibbler.sizeH = 1;
@@ -130,14 +132,54 @@ void Nibbler::initNibbler(int posX, int posY)
     *nibbler.posY = posY;
     *nibbler.mirrored = 0;
 
+    for (int i = 0; i < 200; i++) {
+        object niblerTail;
+
+        niblerTail.texturePath = "./assets/nibbler_snake.png";
+        niblerTail.chr = 'C';
+        niblerTail.maxFrame = 3;
+        niblerTail.type = Type::ENTITY;
+        if (i > 4)
+            *niblerTail.state = State::NONE;
+        *niblerTail.animX = 0;
+        *niblerTail.animY = 0;
+        *niblerTail.animW = 0;
+        *niblerTail.animH = 0;
+        niblerTail.isAnimated = false;
+        *niblerTail.spriteW = 20;
+        *niblerTail.spriteH = 20;
+        niblerTail.sizeH = 1;
+        niblerTail.sizeW = 1;
+        *niblerTail.rotation = 0;
+        *niblerTail.posX = posX - i;
+        *niblerTail.posY = posY;
+        *niblerTail.mirrored = 0;
+        nibbler_tail.push_back(niblerTail);
+        gameObjects.push_back(niblerTail);
+    }
     gameObjects.push_back(nibbler);
 }
 
 void Nibbler::initApples(int posX, int posY)
 {
     object newApples;
-    newApples.texturePath = "./assets/nibbler.png";
-    newApples.chr = 'A';
+    newApples.texturePath = "./assets/apple.png";
+    newApples.chr = 'P';
+    newApples.maxFrame = 3;
+    newApples.type = Type::ENTITY;
+    *newApples.animX = 0;
+    *newApples.animY = 0;
+    *newApples.animW = 0;
+    *newApples.animH = 0;
+    newApples.isAnimated = true;
+    *newApples.spriteW = 1184;
+    *newApples.spriteH = 1184;
+    newApples.sizeH = 1;
+    newApples.sizeW = 1;
+    *newApples.rotation = 0;
+    *newApples.posX = posX;
+    *newApples.posY = posY;
+    *newApples.mirrored = 0;
 
     apples.push_back(newApples);
     gameObjects.push_back(apples.back());
@@ -152,16 +194,20 @@ void Nibbler::setDirection()
 {
     switch (event) {
         case KeyEvent::UP:
-            *nibbler.bufferedDirection = Direction::UP;
+            if (*nibbler.direction != Direction::DOWN)
+                *nibbler.bufferedDirection = Direction::UP;
             break;
         case KeyEvent::LEFT:
-            *nibbler.bufferedDirection = Direction::LEFT;
+            if (*nibbler.direction != Direction::RIGHT)
+                *nibbler.bufferedDirection = Direction::LEFT;
             break;
         case KeyEvent::DOWN:
-            *nibbler.bufferedDirection = Direction::DOWN;
+            if (*nibbler.direction != Direction::UP)
+                *nibbler.bufferedDirection = Direction::DOWN;
             break;
         case KeyEvent::RIGHT:
-            *nibbler.bufferedDirection = Direction::RIGHT;
+            if (*nibbler.direction != Direction::LEFT)
+                *nibbler.bufferedDirection = Direction::RIGHT;
             break;
         default:
             break;
@@ -179,22 +225,29 @@ bool Nibbler::checkMovement(object &entity, float speed)
 
     switch (*entity.direction) {
         case Direction::RIGHT:
-            newPosX += .1 * speed;
+            newPosX += 1 * speed;
             break;
         case Direction::DOWN:
-            newPosY += .1 * speed;
+            newPosY += 1 * speed;
             break;
         case Direction::UP:
-            newPosY -= .1 * speed;
+            newPosY -= 1 * speed;
             break;
         case Direction::LEFT:
-            newPosX -= .1 * speed;
+            newPosX -= 1 * speed;
             break;
     }
     if (checkColision(entity, speed)) {
+        *nibbler_tail[0].posX = *entity.posX;
+        *nibbler_tail[0].posY = *entity.posY;
+        for (int i = 199; i >= 1; i--) {
+            *nibbler_tail[i].posX = *nibbler_tail[i - 1].posX;
+            *nibbler_tail[i].posY = *nibbler_tail[i - 1].posY;
+        }
         *entity.posX = newPosX;
         *entity.posY = newPosY;
-        return true;
+
+
     }
     return false;
 }
@@ -229,6 +282,19 @@ bool Nibbler::checkColision(object &entity, float speed)
     }
     for (auto &i : walls) {
         if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY)) {
+            gameEnded = true;
+            lastScore = score;
+            score = 0;
+            gameEnd();
+            return false;
+        }
+    }
+    for (auto &i : nibbler_tail) {
+        if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY) && *i.state == State::ALIVE) {
+            gameEnded = true;
+            lastScore = score;
+            score = 0;
+            gameEnd();
             return false;
         }
     }
@@ -262,30 +328,28 @@ void Nibbler::setNibblerRotation()
 }
 
 void Nibbler::handleAppleColision() {
-    float hitboxLocationX = *nibbler.posX;
-    float hitboxLocationY = *nibbler.posY;
-
-    switch (*nibbler.direction) {
-        case Direction::RIGHT:
-            hitboxLocationX += 1;
-            break;
-        case Direction::DOWN:
-            hitboxLocationY += 1;
-            break;
-        case Direction::UP:
-            hitboxLocationY -= .1;
-            break;
-        case Direction::LEFT:
-            hitboxLocationX -= .1;
-            break;
-    }
+    int randPosX;
+    int randPosY;
 
     for (auto &i : apples) {
-        if (int (*i.posX) == int (hitboxLocationX) && int (*i.posY) == int (hitboxLocationY) && *i.state == State::ALIVE) {
+        if (int (*i.posX) == int (*nibbler.posX) && int (*i.posY) == int (*nibbler.posY) && *i.state == State::ALIVE) {
+            for (auto &i : nibbler_tail) {
+                if (*i.state == State::NONE) {
+                    *i.state = State::ALIVE;
+                    break;
+                }
+            }
             applesNumber--;
             score += 100;
             lastScore = score;
-            *i.state = State::NONE;
+            *i.posX = (std::rand() % 16) + 10;
+            *i.posY = std::rand() % 17;
+            for (auto &a : walls) {
+                while (*i.posX == *a.posX && *i.posY == *a.posY) {
+                    *i.posX = (std::rand() % 16) + 10;
+                    *i.posY = std::rand() % 17;
+                }
+            }
         }
     }
 }
@@ -307,11 +371,21 @@ void Nibbler::resetGame()
             if (i == 'N') {
                 resetNibbler(posX, posY);
             }
+            if (i == 'A') {
+                resetApples(posX, posY);
+            }
         }
         posX = 0;
         posY++;
     }
-    resetApples();
+    for (int i = 0; i < 200; i++) {
+        if (i > 4)
+            *nibbler_tail[i].state = State::NONE;
+        else
+            *nibbler_tail[i].state = State::ALIVE;
+        *nibbler_tail[i].posX = *nibbler.posX - i;
+        *nibbler_tail[i].posY = *nibbler.posY;
+    }
 }
 
 void Nibbler::resetNibbler(int posX, int posY)
@@ -321,22 +395,14 @@ void Nibbler::resetNibbler(int posX, int posY)
     *nibbler.state = State::ALIVE;
 }
 
-void Nibbler::resetApples()
-{
-    for (auto &i : apples) {
-        *i.state = State::ALIVE;
-    }
-}
-
 void Nibbler::updateScore()
 {
+    gameEnded = false;
     *scoreText.text = "Score : " + std::to_string(score);
 }
 
 bool Nibbler::handleBeginOrEnd()
 {
-    bool started = true;
-    
     if (!started) {
         *gameText.text = "Press any key to start";
         if (event != KeyEvent::NONE) {
@@ -357,8 +423,18 @@ void Nibbler::handleWin() {
     }
 }
 
-    
-extern "C" IGameLibrary* create_game() {
+    void Nibbler::resetApples(int posX, int posY) {
+        static int i = 0;
+
+        *apples[i].posX = posX;
+        *apples[i].posY = posY;
+        i++;
+        if (i == 3)
+            i = 0;
+    }
+
+
+    extern "C" IGameLibrary* create_game() {
     return new Nibbler();
 }
 

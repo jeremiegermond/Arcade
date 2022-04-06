@@ -41,10 +41,11 @@ class Nibbler : public GameLibrary {
         void handleWin();
         void resetNibbler(int posX, int posY);
         void resetGame();
-        void resetApples();
+        void resetApples(int posX, int posY);
 
         std::vector<std::string> map;
         object nibbler;
+        std::vector<object> nibbler_tail;
         float nibblerSpeed;
         bool started;
         int applesNumber;
