@@ -18,10 +18,28 @@
 
 namespace arcade {
 
+struct sdlObject : public object {
+    sf::RectangleShape rectangle{};
+
+    sdlObject(const object &obj) : object(obj) {}
+};
+
+
 class SFMLGraphicLibrary : public GraphicLibrary {
     private:
         sf::RenderWindow window;
+        sf::Texture texture;
+        sf::Sprite sprite;
+        sf::Font font;
+        sf::Text text;
 
+        std::vector<object> textObjects;
+        std::vector<object> entityObjects;
+
+        void initTextObjects(object &gameObject);
+        void initEntityObjects(object &gameObject);
+        void drawTextObject() override;
+        void drawEntityObject() override;
         KeyEvent handleInputs();
     public:
         SFMLGraphicLibrary(const Parameters &parameters);
@@ -29,7 +47,7 @@ class SFMLGraphicLibrary : public GraphicLibrary {
 
         void createWindow() override;
         void closeWindow() override;
-        void loadObjects(std::vector<object> gameObjects) override {};
+        void loadObjects(std::vector<object> gameObjects) override;
         KeyEvent loop() override;
 };
 

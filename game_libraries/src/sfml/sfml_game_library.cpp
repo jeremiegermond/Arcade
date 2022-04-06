@@ -31,10 +31,79 @@ void SFMLGraphicLibrary::createWindow() {
 
 KeyEvent SFMLGraphicLibrary::loop() {
     this->window.clear();
-    this->window.draw(sf::CircleShape(50));
+    drawTextObject();
+    drawEntityObject();
     this->window.display();
 
     return handleInputs();
+}
+
+void SFMLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
+    for (auto &object : gameObjects) {
+        switch (object.type) {
+            case Type::TEXT:
+                initTextObjects(object);
+                break;
+            case Type::ENTITY:
+                initEntityObjects(object);
+                break;
+        }
+    }
+}
+
+void SFMLGraphicLibrary::initTextObjects(object &gameObject) {
+    textObjects.push_back(gameObject);
+}
+
+void SFMLGraphicLibrary::initEntityObjects(object &gameObject) {
+	entityObjects.push_back(gameObject);
+}
+
+void SFMLGraphicLibrary::drawTextObject() {
+    this->font.loadFromFile("assets/Sans.ttf");
+
+    for (auto &i : textObjects) {
+        sf::Text text(i.text->c_str(), font);
+        text.setPosition(*i.posY * 20, *i.posX * 20);
+        text.setCharacterSize(24);
+	    this->window.draw(text);
+    }
+}
+
+void SFMLGraphicLibrary::drawEntityObject() {
+    sf::RectangleShape rectangle(sf::Vector2f(50, 50));
+
+    this->window.draw(rectangle);
+    for (auto &i: entityObjects) {
+            if (*i.state == State::NONE)
+                continue;
+            switch (i.chr) {
+                case 'X':
+                    rectangle.setFillColor(sf::Color(0, 0, 255, 255));
+                    this->window.draw(rectangle);
+                    break;
+                case 'O':
+                    break;
+                case 'P':
+                    break;
+                case 'M':
+                    break;
+                case 'U':
+                    break;
+                case 'L':
+                    break;
+                case '.':
+                    if (*i.state != State::ALIVE)
+                        break;
+                    break;
+                case 'C':
+                    if (*i.state != State::ALIVE)
+                        break;
+                    break;
+                default:
+                    break;
+            }
+        }
 }
 
 KeyEvent SFMLGraphicLibrary::handleInputs() {
@@ -50,7 +119,7 @@ KeyEvent SFMLGraphicLibrary::handleInputs() {
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
                 input = KeyEvent::ESCAPE;
-                break; 
+                break;
             }
             if (event.key.code == sf::Keyboard::Up) {
                 input = KeyEvent::UP;
