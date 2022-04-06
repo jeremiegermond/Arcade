@@ -7,9 +7,6 @@
 
 #include "Nibbler.hpp"
 #include "game_library.hpp"
-#include <fstream>
-#include <iterator>
-#include <sstream>
 
 namespace arcade {
 
@@ -73,10 +70,10 @@ void Nibbler::readMap() {
             } else if (i == 'A') {
                 applesNumber++;
                 initApples(posX, posY);
-            } else if (i == 'N') { // Tête du Snake doit être différente du corps
+            } else if (i == 'N') {
                 initNibbler(posX, posY);
                 index++;
-            } else if (i == 'C') { // Coprs du Snake + le snake doit être de 4 au début (3 corps + 1 tête dcp)
+            } else if (i == 'C') {
                 initNibbler(posX, posY);
                 index++;
             }
@@ -265,7 +262,7 @@ void Nibbler::setNibblerRotation()
 
 void Nibbler::handleAppleColision() {
     float hitboxLocationX = *nibbler.posX;
-    float hitboxLocationY = *pacman.posY;
+    float hitboxLocationY = *nibbler.posY;
 
     switch (*nibbler.direction) {
         case Direction::RIGHT:
@@ -359,9 +356,8 @@ void Nibbler::handleWin() {
     }
 }
 
-Nibbler::~Nibbler() {
-}
-    extern "C" IGameLibrary* create_game() {
+    
+extern "C" IGameLibrary* create_game() {
     return new Nibbler();
 }
 

@@ -10,12 +10,16 @@
 
 #include "game_library.hpp"
 #include <istream>
+#include <fstream>
+#include <iterator>
+#include <sstream>
+#include <chrono>
 
 #define NOW std::chrono::high_resolution_clock::now()
 
-namespace arcade
-{
-   class Nibbler : public GameLibrary {
+namespace arcade {
+
+class Nibbler : public GameLibrary {
     private:
         void initNibbler(int posX, int posY);
         void readMap();
@@ -47,10 +51,11 @@ namespace arcade
         int totalApples;
         std::vector<object> apples;
         std::vector<object> walls;
+        std::chrono::high_resolution_clock::time_point chrono;
+        std::chrono::duration<long, std::ratio<1, 1000>>::rep timeUpdate;
     
     public:
         Nibbler();
-        ~Nibbler();
 };
 
 }
