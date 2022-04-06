@@ -33,7 +33,9 @@ class Arcade {
 
         std::shared_ptr<IGameLibrary> currentGame;
         DynamicLibrary pacmanLib;
+        DynamicLibrary nibblerLib;
         std::shared_ptr<IGameLibrary> pacman;
+        std::shared_ptr<IGameLibrary> nibbler;
 
         KeyEvent input;
         bool running;

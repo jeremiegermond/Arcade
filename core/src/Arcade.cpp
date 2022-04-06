@@ -19,6 +19,8 @@ constexpr std::array<std::string_view, 3> GRAPHIC_LIB_PATHS = {
 Arcade::Arcade() : input(KeyEvent::NONE), running(false), scoreBoard() {
     this->pacmanLib.open("./lib/arcade_pacman.so", RTLD_LAZY | RTLD_LOCAL);
     this->pacman.reset(this->pacmanLib.create_game());
+    this->nibblerLib.open("./lib/arcade_nibbler.so", RTLD_LAZY | RTLD_LOCAL);
+    this->nibbler.reset(this->nibblerLib.create_game());
 }
 
 void Arcade::run(const std::string &libName) {
@@ -28,6 +30,8 @@ void Arcade::run(const std::string &libName) {
         throw Exception(libName + " is not a graphic lib.");
     }
     this->graphicIndex = itr - GRAPHIC_LIB_PATHS.begin();
+
+    username = "user";
 
     getCurrentLibrary();
     currentGame = pacman;
@@ -41,6 +45,9 @@ void Arcade::run(const std::string &libName) {
         currentGame->setKeyEvent(input);
         pacman->updateGameObjects();
         switchLib();
+        if (currentGame->hasGameEnded() || !running) {
+            scoreBoard.addToScoreboard(username, currentGame->getLastScore());
+        }
     }
 }
 
