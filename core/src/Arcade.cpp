@@ -32,8 +32,8 @@ void Arcade::run(const std::string &libName) {
     getCurrentLibrary();
     currentGame = pacman;
     currentGame->setGameObjects();
-    this->currentGraphic->createWindow();
-    this->currentGraphic->loadObjects(currentGame->getGameObjects());
+    currentGraphic->createWindow();
+    currentGraphic->loadObjects(currentGame->getGameObjects());
     running = true;
     while (running) {
         input = currentGraphic->loop();
@@ -42,7 +42,6 @@ void Arcade::run(const std::string &libName) {
         pacman->updateGameObjects();
         switchLib();
     }
-    currentGraphic->closeWindow();
 }
 
 void Arcade::getNextLibrary() {
@@ -74,8 +73,11 @@ void Arcade::getCurrentLibrary() {
 }
 
 void Arcade::handleKeyEvents() {
-    if (input == KeyEvent::q)
+    if (input == KeyEvent::q) {
+        currentGraphic->closeWindow();
+        currentGraphic.reset(nullptr);
         running = false;
+    }
 }
 
 void Arcade::switchLib() {
