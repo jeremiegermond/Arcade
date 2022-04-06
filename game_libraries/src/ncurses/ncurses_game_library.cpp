@@ -48,6 +48,8 @@ void NCursesGraphicLibrary::createWindow() {
 }
 
 void NCursesGraphicLibrary::loadObjects(std::vector<object> GameObjects) {
+    textObjects.clear();
+    entityObjects.clear();
     for (auto &object : GameObjects) {
         switch (object.type) {
             case Type::TEXT:
@@ -87,6 +89,9 @@ KeyEvent NCursesGraphicLibrary::handleInputs() {
     
     switch (key)
     {
+        case KEY_ENTER:
+            input = KeyEvent::ENTER;
+            break;
         case KEY_UP:
             input = KeyEvent::UP;
             break;

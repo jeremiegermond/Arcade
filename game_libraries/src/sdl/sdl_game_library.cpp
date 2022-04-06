@@ -69,6 +69,8 @@ void SDLGraphicLibrary::createWindow() {
 }
 
 void SDLGraphicLibrary::loadObjects(std::vector<object> gameObjects) {
+    textObjects.clear();
+    entityObjects.clear();
     for (auto &object : gameObjects) {
         switch (object.type) {
             case Type::TEXT:
@@ -183,6 +185,9 @@ KeyEvent SDLGraphicLibrary::handleInputs() {
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE:
                     input = KeyEvent::ESCAPE;
+                    break;
+                case SDLK_KP_ENTER:
+                    input = KeyEvent::ENTER;
                     break;
                 case SDLK_RIGHT:
                     input = KeyEvent::RIGHT;

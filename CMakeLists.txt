@@ -35,6 +35,7 @@ set_target_properties(
 add_subdirectory(game_libraries)
 add_library(arcade_pacman SHARED)
 add_library(arcade_nibbler SHARED)
+add_library(arcade_menu SHARED)
 
 set_target_properties(
         arcade_pacman
@@ -44,6 +45,12 @@ set_target_properties(
 
 set_target_properties(
         arcade_nibbler
+        PROPERTIES
+        PREFIX ""
+)
+
+set_target_properties(
+        arcade_menu
         PROPERTIES
         PREFIX ""
 )

@@ -21,6 +21,7 @@ class IGameLibrary {
         virtual void setKeyEvent(KeyEvent event) = 0;
         virtual int getLastScore() = 0;
         virtual bool hasGameEnded() = 0;
+        virtual std::string getSelectedGame() = 0;
 };
 
 extern "C" IGameLibrary *create_game();

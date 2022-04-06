@@ -21,6 +21,8 @@ Arcade::Arcade() : input(KeyEvent::NONE), running(false), scoreBoard() {
     this->pacman.reset(this->pacmanLib.create_game());
     this->nibblerLib.open("./lib/arcade_nibbler.so", RTLD_LAZY | RTLD_LOCAL);
     this->nibbler.reset(this->nibblerLib.create_game());
+    this->menuLib.open("./lib/arcade_menu.so", RTLD_LAZY | RTLD_LOCAL);
+    this->menu.reset(this->menuLib.create_game());
 }
 
 void Arcade::run(const std::string &libName) {
@@ -34,13 +36,26 @@ void Arcade::run(const std::string &libName) {
     username = "user";
 
     getCurrentLibrary();
-    currentGame = nibbler;
+    currentGame = menu;
     currentGame->setGameObjects();
     currentGraphic->createWindow();
     currentGraphic->loadObjects(currentGame->getGameObjects());
     running = true;
     while (running) {
         input = currentGraphic->loop();
+        if (currentGame == menu) {
+            if (input == KeyEvent::UP) {
+                if (currentGame->getSelectedGame() == "pacman") {
+                    currentGame = pacman;
+                } else if (currentGame->getSelectedGame() == "nibbler") {
+                    currentGame = nibbler;
+                }
+                currentGame->setGameObjects();
+                currentGraphic->loadObjects(currentGame->getGameObjects());
+                input = KeyEvent::NONE;
+                continue;
+            }
+        }
         handleKeyEvents();
         currentGame->setKeyEvent(input);
         currentGame->updateGameObjects();
