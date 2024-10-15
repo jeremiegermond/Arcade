@@ -10,3 +10,5 @@ To be able to deal with the elements of your gaming plateform at run-time, your 
 
 We share our interface with one other project group.
 After turn-in, it will therefore be possible to run your games using their launcher and graphical libraries, and vice-versa.
+
+**Grade A**
